@@ -1,7 +1,8 @@
 #include "actor.h"
 
-Actor::Actor(QObject *parent) : QObject (parent), QGraphicsItem()
+Actor::Actor(QObject *parent) : QObject (parent), QGraphicsPixmapItem()
 {
+    setPos(0, 0);
     dx = 0; dy = 0;
 
     currentFrame = 0;
@@ -10,25 +11,55 @@ Actor::Actor(QObject *parent) : QObject (parent), QGraphicsItem()
 //    timer = new QTimer();
 //    connect(timer, &QTimer::timeout, this, &Actor::nextFrame);
 //    timer -> start(100);
+    std::cout << x() << "\t" << y() << "\t" << dx << "\t" << dy << std::endl;
 }
 
 QRectF Actor::boundingRect() const
 {
-    return QRectF(x()+dx, y()+dy,50,50);
+    qreal penWidth = 1;//たぶん
+//    return QRectF( x()+dx - penWidth, y()+dy - penWidth,
+//                  50 - penWidth, 50 - penWidth);
+    return QRectF(x()/*+dx*/, y()/*+dy*/,50,50);
 }
 
 void Actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter -> drawPixmap(x()+dx, y()+dy, 50, 50, *sprite, currentFrame, 0, 5, 5);
+    painter -> drawPixmap(x()/*+dx*/, y()/*+dy*/, 50, 50, *sprite, currentFrame, 0, 5, 5);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
 
 void Actor::nextFrame()
 {
+    qreal penWidth = 2;//たぶん
     currentFrame += 5;
     if (currentFrame >= 25 ) currentFrame = 0;
 
-    this->update(x()+dx,y()+dy,50,50);
+    this->update( x()/*+dx*/+penWidth, y()/*+dy*/+penWidth, 50, 50);
 //    dx = 0; dy = 0;
 }
+
+void Actor::move()
+{
+//    moveBy(dx,dy);
+}
+
+//void Actor::keyPressEvent(QKeyEvent* e)
+//{
+//    switch (e->key()) {
+//    case Qt::Key_Up:
+//        goUp();
+//        break;
+//    case Qt::Key_Down:
+//        goDown();
+//        break;
+//    case Qt::Key_Left:
+//        goLeft();
+//        break;
+//    case Qt::Key_Right:
+//        goRight();
+//        break;
+//    default:
+//        break;
+//    }
+//}

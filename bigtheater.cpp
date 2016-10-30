@@ -10,13 +10,19 @@ BigTheater::BigTheater(QWidget *parent) : QGraphicsView (parent)
 
     Hero = new Actor(this);
     scene1 -> addItem(Hero);
-    connect(clock, &QTimer::timeout, Hero, &Actor::nextFrame);
+    connect(clock, SIGNAL(timeout()), Hero, SLOT(nextFrame()));
     clock -> start(100);
+
+//    Hero -> grabKeyboard();
+//    Hero -> setFlag(QGraphicsItem::ItemIsFocusable);
 
 }
 
 void BigTheater::keyPressEvent(QKeyEvent* e)
 {
+
+
+//    std::cout << "keyPressEvent " << e->key() << std::endl;
     switch (e -> key()) {
     case Qt::Key_F10:
         QApplication::quit();
