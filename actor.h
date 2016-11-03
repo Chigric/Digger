@@ -16,40 +16,39 @@ class Actor : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
         QRectF boundingRect() const;
-    int dx,dy;
     QPixmap *sprite;
-//    QTimer *timer;
+    QTimer *timer;
     int currentFrame;
 
-//    void keyPressEvent(QKeyEvent*);
 public:
     explicit Actor(QObject *parent = 0);
     void goUp()   {
-          /*dx +=  0; dy -= 50;*/ setPos(x() + 0, y() -50);
+          /*dx +=  0; dy -= 50;*/ moveBy(0, -10); /*setPos(x() + 0, y() - 50)*/
           std::cout << "Up" << std::endl;
           std::cout << x() << "\t" << y() << "\t" << dx << "\t" << dy << std::endl;
     }
     void goDown() {
-        /*dx +=  0; dy += 50;*/ setPos(x() + 0, y() + 30);
+        /*dx +=  0; dy += 50;*/ moveBy(0, 10); /* setPos(x() + 0, y() + 50)*/
         std::cout << "Down" << std::endl;
         std::cout << x() << "\t" << y() << "\t" << dx << "\t" << dy << std::endl;
     }
     void goLeft() {
-        moveBy(-50,0); /*dx -= 50; dy +=  0;*/
+        moveBy(-10,0); /*dx -= 50; dy +=  0;*/
         std::cout << "Left" << std::endl;
         std::cout << x() << "\t" << y() << "\t" << dx << "\t" << dy << std::endl;
     }
     void goRight(){
-        moveBy(50, 0); /*dx += 50; dy +=  0;*/
+        moveBy(10, 0); /*dx += 50; dy +=  0;*/
         std::cout << "Right" << std::endl;
         std::cout << x() << "\t" << y() << "\t" << dx << "\t" << dy << std::endl;
     }
-
-    void move();
+    void setSpeed(int dx_, int dy_);
+    int dx,dy;
 
 
 public slots:
     void nextFrame();
+    void move();
 
 };
 

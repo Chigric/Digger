@@ -2,21 +2,22 @@
 
 Actor::Actor(QObject *parent) : QObject (parent), QGraphicsPixmapItem()
 {
-    setPos(0, 0);
+//    setPos(200, 200);
     dx = 0; dy = 0;
 
     currentFrame = 0;
     sprite = new QPixmap(":Orange.png", "png", Qt::PreferDither);
     sprite->setMask(sprite->createHeuristicMask());
-//    timer = new QTimer();
-//    connect(timer, &QTimer::timeout, this, &Actor::nextFrame);
-//    timer -> start(100);
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+//    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
+    timer -> start(100);
     std::cout << x() << "\t" << y() << "\t" << dx << "\t" << dy << std::endl;
 }
 
 QRectF Actor::boundingRect() const
 {
-    qreal penWidth = 1;//たぶん
+    qreal penWidth = 1;//???
 //    return QRectF( x()+dx - penWidth, y()+dy - penWidth,
 //                  50 - penWidth, 50 - penWidth);
     return QRectF(x()/*+dx*/, y()/*+dy*/,50,50);
@@ -31,35 +32,25 @@ void Actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Actor::nextFrame()
 {
-    qreal penWidth = 2;//たぶん
+    qreal penWidth = 0;//???
     currentFrame += 5;
     if (currentFrame >= 25 ) currentFrame = 0;
 
     this->update( x()/*+dx*/+penWidth, y()/*+dy*/+penWidth, 50, 50);
+//    setPos(200, 200);
 //    dx = 0; dy = 0;
 }
 
 void Actor::move()
 {
-//    moveBy(dx,dy);
+    moveBy(dx,dy);
+    std::cout << x() <<" "<< y() << std::endl;
+    dx = 0;
+    dy = 0;
 }
 
-//void Actor::keyPressEvent(QKeyEvent* e)
-//{
-//    switch (e->key()) {
-//    case Qt::Key_Up:
-//        goUp();
-//        break;
-//    case Qt::Key_Down:
-//        goDown();
-//        break;
-//    case Qt::Key_Left:
-//        goLeft();
-//        break;
-//    case Qt::Key_Right:
-//        goRight();
-//        break;
-//    default:
-//        break;
-//    }
-//}
+void Actor::setSpeed(int dx_, int dy_)
+{
+    dx = dx_;
+    dy = dy_;
+}

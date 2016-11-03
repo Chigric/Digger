@@ -8,14 +8,20 @@ BigTheater::BigTheater(QWidget *parent) : QGraphicsView (parent)
     this->setScene(scene1);
     scene1 -> setBackgroundBrush(Qt::black);
 
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     Hero = new Actor(this);
     scene1 -> addItem(Hero);
-    connect(clock, SIGNAL(timeout()), Hero, SLOT(nextFrame()));
-    clock -> start(100);
 
-//    Hero -> grabKeyboard();
-//    Hero -> setFlag(QGraphicsItem::ItemIsFocusable);
+    connect(clock, SIGNAL(timeout()), this, SLOT(update()));
+    clock -> start(15);
 
+//    Hero -> setPos(200, 200);
+//    Hero->dx = 200;
+//    Hero->dy = 200;
+    connect(clock, SIGNAL(timeout()), Hero, SLOT(move()));
+    std::cout << Hero->x() << "\t" << Hero->y() << "\t" << Hero->dx << "\t" << Hero->dy << std::endl;
 }
 
 void BigTheater::keyPressEvent(QKeyEvent* e)
@@ -28,16 +34,20 @@ void BigTheater::keyPressEvent(QKeyEvent* e)
         QApplication::quit();
         break;
     case Qt::Key_Up:
-        Hero->goUp();
+        Hero->setSpeed(0 ,-10);
+//        Hero->goUp();
         break;
     case Qt::Key_Down:
-        Hero->goDown();
+        Hero->setSpeed(0 , 10);
+//        Hero->goDown();
         break;
     case Qt::Key_Left:
-        Hero->goLeft();
+        Hero->setSpeed(-10, 0);
+//        Hero->goLeft();
         break;
     case Qt::Key_Right:
-        Hero->goRight();
+        Hero->setSpeed(10, 0);
+//        Hero->goRight();
         break;
     default:
         break;
