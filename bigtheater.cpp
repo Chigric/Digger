@@ -2,26 +2,31 @@
 
 BigTheater::BigTheater(QWidget *parent) : QGraphicsView (parent)
 {
-    scene1 = new QGraphicsScene(this);
-    clock = new QTimer (this);
-    this->setFixedSize(750, 500);
-    this->setScene(scene1);
-    scene1 -> setBackgroundBrush(Qt::black);
 
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setFixedSize(750, 500);
+    this->setFocus();//トリビュートで
 
-    Hero = new Actor(this);
+    scene1 = new QGraphicsScene();
+    clock = new QTimer ();
+
+    scene1 -> setSceneRect(0, 0, 750, 500);
+    scene1 -> setBackgroundBrush(Qt::black);
+    setScene(scene1);
+
+    Hero = new Actor();
     scene1 -> addItem(Hero);
 
-    connect(clock, SIGNAL(timeout()), this, SLOT(update()));
     clock -> start(15);
+    connect(clock, SIGNAL(timeout()), this, SLOT(update()));
+
 
 //    Hero -> setPos(200, 200);
 //    Hero->dx = 200;
 //    Hero->dy = 200;
     connect(clock, SIGNAL(timeout()), Hero, SLOT(move()));
-    std::cout << Hero->x() << "\t" << Hero->y() << "\t" << Hero->dx << "\t" << Hero->dy << std::endl;
+//    std::cout << Hero->x() << "\t" << Hero->y() << "\t" << Hero->dx << "\t" << Hero->dy << std::endl;
 }
 
 void BigTheater::keyPressEvent(QKeyEvent* e)

@@ -12,6 +12,7 @@
 
 class BigTheater : public QGraphicsView
 {
+    Q_OBJECT
     //int width = 750, height = 500;
         void keyPressEvent(QKeyEvent*);
 public:
@@ -19,6 +20,8 @@ public:
         QGraphicsScene *scene1;
         QTimer *clock;
         Actor *Hero;
+        bool *horizontalBlocks;
+        bool *verticalBlocks;
 signals:
 
 public slots:
