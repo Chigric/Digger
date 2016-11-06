@@ -13,8 +13,8 @@
 #include <cmath>
 #include <iostream>
 
-#define speedX 25
-#define speedY 22
+#define speedX 15
+#define speedY 11
 
 class Actor : public QObject, public QGraphicsPixmapItem
 {

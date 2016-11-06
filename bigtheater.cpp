@@ -50,19 +50,19 @@ void BigTheater::keyPressEvent(QKeyEvent* e)
         QApplication::quit();
         break;
     case Qt::Key_Up:
-//        if (Hero->y() != 33)
+        if (Hero->y() != 33)
             Hero->move(0, -speedY);
         break;
     case Qt::Key_Down:
-//        if (Hero->y() != 627)
+        if (Hero->y() != 627)
             Hero->move(0, speedY);
         break;
     case Qt::Key_Left:
-//        if (Hero->x() != 37)
+        if (Hero->x() != 37)
             Hero->move(-speedX, 0);
         break;
     case Qt::Key_Right:
-//        if (Hero->x() != 1087)
+        if (Hero->x() != 1087)
             Hero->move(speedX, 0);
         break;
     default:
