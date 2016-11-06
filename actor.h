@@ -10,54 +10,32 @@
 #include <QTimer>
 #include <QKeyEvent>
 
+#include <cmath>
 #include <iostream>
 
-#define speed 50
-#define sizeOfItemX 50
-#define sizeOfItemY 50
-#define sizeOfPictureX 5
-#define sizeOfPictureY 5
+#define speed 10
 
 class Actor : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-//        QRectF boundingRect() const;
+
     QPixmap *sprite;
-    QTimer *timer;
+    QTimer *timer = nullptr;
     int currentFrame;
     int OwnX, OwnY;
+    int sizeOfItemX;
+    int sizeOfItemY;
+    int sizeOfPictureX;
+    int sizeOfPictureY;
 
 public:
-    explicit Actor();
-    void goUp()   {
-          /*dx +=  0; dy -= 50;*/ moveBy(0, -10); /*setPos(x() + 0, y() - 50)*/
-          std::cout << "Up" << std::endl;
-          std::cout << OwnX << "\t" << OwnY << "\t" << dx << "\t" << dy << std::endl;
-    }
-    void goDown() {
-        /*dx +=  0; dy += 50;*/ moveBy(0, 10); /* setPos(x() + 0, y() + 50)*/
-        std::cout << "Down" << std::endl;
-        std::cout << OwnX << "\t" << OwnY << "\t" << dx << "\t" << dy << std::endl;
-    }
-    void goLeft() {
-        moveBy(-10,0); /*dx -= 50; dy +=  0;*/
-        std::cout << "Left" << std::endl;
-        std::cout << OwnX << "\t" << OwnY << "\t" << dx << "\t" << dy << std::endl;
-    }
-    void goRight(){
-        moveBy(10, 0); /*dx += 50; dy +=  0;*/
-        std::cout << "Right" << std::endl;
-        std::cout << OwnX << "\t" << OwnY << "\t" << dx << "\t" << dy << std::endl;
-    }
-    void setSpeed(int dx_, int dy_);
-    int dx,dy;
+    Actor();
+    ~Actor();
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void move(int dx_, int dy_);
 
-
-public slots:
+private slots:
     void nextFrame();
-    void move();
-
 };
 
 #endif // ACTOR_H
