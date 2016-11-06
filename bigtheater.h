@@ -8,7 +8,7 @@
 #include <QTimer>
 
 #include <actor.h>
-#include "scenery.h"
+//#include "scenery.h"
 
 
 class BigTheater : public QGraphicsView
@@ -18,8 +18,8 @@ class BigTheater : public QGraphicsView
     QGraphicsScene *scene1;
     QTimer *clock;
     Actor *Hero = nullptr;
-    Scenery *terra;
 
+    char **Field;
     bool *horizontalBlocks;
     bool *verticalBlocks;
 public:

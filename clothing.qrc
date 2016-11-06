@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>Orange.png</file>
         <file>Digger.png</file>
+        <file>cash.png</file>
+        <file>terra.png</file>
+        <file>Imerald.png</file>
+        <file>MoveOfImerald.png</file>
     </qresource>
 </RCC>

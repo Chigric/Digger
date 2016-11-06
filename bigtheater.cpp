@@ -1,5 +1,23 @@
 #include "bigtheater.h"
 
+char Template[10][16] = {
+//123456787654321
+ ".111$11111.....", //1
+ ".11**11*11.1$11", //2
+ ".$1**11*11.1111", //3
+ ".11**$1*$1.1***", //4
+ ".11**11*11.1***", //5
+ "..1**11*11.1***", //6
+ "1.1111$1$1.1111", //7
+ "1....11111.1111", //8
+ "1111.11111.111*", //9
+ "1111.......11**", //10
+//1 - earth
+//$ - monye(cash)
+//* - emerald
+//. - void
+};
+
 BigTheater::BigTheater() : QGraphicsView ()
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -13,23 +31,37 @@ BigTheater::BigTheater() : QGraphicsView ()
     scene1 -> setSceneRect(0, 0, 1125, 660);
     scene1 -> setBackgroundBrush(Qt::black);
     setScene(scene1);
+    horizontalBlocks = new bool[15];
+    verticalBlocks = new bool[10];
+    Field = new char*[10];
+    for (int i = 0; i < 10; i++)
+        Field[i] = new char[15];
 
-
-    terra = new Scenery(300, 300);
-    terra->drawScenery(1);
-    scene1 -> addItem(terra);
-    scene1 -> addLine(300, 300, 375, 300, QPen(Qt::blue));
-    scene1 -> addLine(300, 300, 300, 366, QPen(Qt::blue));
-    scene1 -> addLine(375, 300, 375, 366, QPen(Qt::blue));
-    scene1 -> addLine(300, 366, 375, 366, QPen(Qt::blue));
-    scene1 -> addRect(225, 234, 75, 66, QPen(Qt::blue), QBrush(Qt::green) );
 
     for (int i = 0; i < 1125; i += 75)
     {
         for (int j = 0; j < 660; j += 66){
-            scene1 -> addRect(i, j, 75, 66, QPen(Qt::darkGreen), QBrush(Qt::darkGreen) );
-            scene1 -> addLine(i,    j,    i+75,  j,    QPen(Qt::darkBlue));
-            scene1 -> addLine(i,    j,    i,     j+66, QPen(Qt::blue));
+            switch (Template[j/66][i/75]) {
+            case '1':
+                scene1 -> addRect(i, j, 75, 66, QPen(Qt::darkGreen), /*QBrush(*/QPixmap(":terra.png"/*)*/)/*Qt::darkGreen*/);
+                scene1 -> addLine(i,    j,    i+75,  j,    QPen(Qt::darkBlue));
+                scene1 -> addLine(i,    j,    i,     j+66, QPen(Qt::blue));
+                break;
+            case '$':
+                scene1 -> addRect(i, j, 75, 66, QPen(Qt::darkGreen), /*QBrush(*/QPixmap(":cash.png"/*)*/)/*Qt::darkGreen*/);
+                scene1 -> addLine(i,    j,    i+75,  j,    QPen(Qt::darkBlue));
+                scene1 -> addLine(i,    j,    i,     j+66, QPen(Qt::blue));
+                break;
+            case '*':
+                scene1 -> addRect(i, j, 75, 66, QPen(Qt::darkGreen), /*QBrush(*/QPixmap(":Imerald.png"/*)*/)/*Qt::darkGreen*/);
+                scene1 -> addLine(i,    j,    i+75,  j,    QPen(Qt::darkBlue));
+                scene1 -> addLine(i,    j,    i,     j+66, QPen(Qt::blue));
+                break;
+            default:
+                break;
+            }
+
+
 //            scene1 -> addLine(i+75, j,    i+75,  j+66, QPen(Qt::blue));
 //            scene1 -> addLine(i,    j+66, i+75,  j+66, QPen(Qt::blue));
         }
