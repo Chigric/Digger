@@ -13,7 +13,8 @@
 #include <cmath>
 #include <iostream>
 
-#define speed 10
+#define speedX 25
+#define speedY 22
 
 class Actor : public QObject, public QGraphicsPixmapItem
 {
@@ -33,6 +34,8 @@ public:
     ~Actor();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void move(int dx_, int dy_);
+    int x() const;
+    int y() const;
 
 private slots:
     void nextFrame();

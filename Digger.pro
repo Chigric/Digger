@@ -9,11 +9,13 @@ TEMPLATE = app
 SOURCES += \
     main.cpp \
     bigtheater.cpp \
-    actor.cpp
+    actor.cpp \
+    scenery.cpp
 
 HEADERS += \
     bigtheater.h \
-    actor.h
+    actor.h \
+    scenery.h
 
 RESOURCES += \
     clothing.qrc
