@@ -6,28 +6,29 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QPaintEvent>
 
 #include <actor.h>
-//#include "scenery.h"
+#include "scenery.h"
 
 
 class BigTheater : public QGraphicsView
 {
     Q_OBJECT
     //int width = 750, height = 500;
-    QGraphicsScene *scene1;
+    QGraphicsScene *scene;
     QTimer *clock;
-    Actor *Hero = nullptr;
+    Actor *hero /*= nullptr*/;
+    Scenery **sss/*[10][15]*/ = nullptr;
 
-    char **Field;
-    bool *horizontalBlocks;
-    bool *verticalBlocks;
 public:
     explicit BigTheater();
+    ~BigTheater();
     void keyPressEvent(QKeyEvent* e);
 signals:
 
 public slots:
+//    void paintMap();
 };
 
 #endif // BIGTHEATER_H
