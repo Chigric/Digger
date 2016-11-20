@@ -10,12 +10,17 @@ SOURCES += \
     main.cpp \
     bigtheater.cpp \
     actor.cpp \
-    scenery.cpp
+    scenery.cpp \
+    digger.cpp \
+    imerald.cpp
 
 HEADERS += \
     bigtheater.h \
     actor.h \
-    scenery.h
+    scenery.h \
+    digger.h \
+    define.h \
+    imerald.h
 
 RESOURCES += \
     clothing.qrc

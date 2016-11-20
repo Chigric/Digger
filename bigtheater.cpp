@@ -39,88 +39,65 @@ BigTheater::BigTheater() : QGraphicsView ()
 //        Field[i] = new char[15];
 
     qDebug() << "start entry";
-    sss = new Scenery*[10];
+    scenery = new Scenery*[10];
+    imeralds = new Imerald*[27];
+    bool yes;
+    int k = 0;
     for (int i = 9; i >= 0; i--){
-        sss[i] = new Scenery[15];
+        scenery[i] = new Scenery[15];
         for (int j = 14; j >= 0; j--){
-            sss[i][j].setPos(75 * j, 66 * i);
+            yes = false;
+            scenery[i][j].setPos(sizeOfPixelX * j, sizeOfPixelY * i);
             switch (Template[i][j]){
             case '1':
                 qDebug() << "1";
-                sss[i][j].setBox(true);
+                scenery[i][j].setBox(true);
                 break;
             case '$':
                 qDebug() << "$";
                 //+ Monye(is'n cash)
-                sss[i][j].setBox(true);
+                scenery[i][j].setBox(true);
                 break;
             case '*':
                 qDebug() << "*";
                 //+ Imerald
-                sss[i][j].setBox(true);
+                scenery[i][j].setBox(true);
+                imeralds[k] = new Imerald(sizeOfPixelX * j, sizeOfPixelY * i);
+                yes = true;
                 break;
             default:
                 break;
             }
 
-            if ((Template[i-1][j] != '.' && Template[i][j] == '.') || Template[i][j] != '.')
-                sss[i][j].setHLine(true);
-            if ((Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.')
-                sss[i][j].setVLine(true);
-            scene -> addItem(&sss[i][j]);
+            if (( (Template[i-1][j] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && i)
+                scenery[i][j].setHLine(true);
+            if (( (Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && j)
+                scenery[i][j].setVLine(true);
+            scene -> addItem(&scenery[i][j]);
+            if(yes){
+                scene -> addItem(imeralds[k]);
+                ++k;
+            }
         }
     }
     qDebug() << "end entry";
 
-
-
-
-//    for (int i = 0; i < 10; i++)
-//    {
-//        for (int j = 0; j < 15; j++){
-//            switch (Field[i][j]) {
-//            case '1':
-//                std::cout << '1';
-//                scene -> addRect(J_, I_, 75 -1, 66 -1, QPen(Qt::darkGreen), /*QBrush(*/QPixmap(":-terra.png"/*)*/)/*Qt::darkGreen*/);
-//                break;
-//            case '$':
-//                std::cout << '$';
-//                scene -> addRect(J_, I_, 75 -1, 66 -1, QPen(Qt::darkGreen), /*QBrush(*/QPixmap(":-cash.png"/*)*/)/*Qt::darkGreen*/);
-//                break;
-//            case '*':
-//                std::cout << '*';
-//                scene -> addRect(J_, I_, 75 -1, 66 -1, QPen(Qt::darkGreen), /*QBrush(*/QPixmap(":-Imerald.png"/*)*/)/*Qt::darkGreen*/);
-//                break;
-//            default:
-//                std::cout << '.';
-//                break;
-//            }
-//            if (verticalBlocks[i] == true)
-//                scene -> addLine(J_, I_, J_+75, I_, QPen(Qt::blue));
-//            else
-//                std::cout << "false1";
-
-//            if (horizontalBlocks[j] == true)
-//                scene -> addLine(J_, I_, J_, I_+66, QPen(Qt::blue));
-//            else
-//                std::cout << "false2";
-////            std::cout << Field[i][j];
-//        }
-//        std::cout << std::endl;
- //    }
-
-    hero = new Actor();
+    hero = new Digger(this);
     scene -> addItem(hero);
 
-    clock -> start(15);
+    clock -> start(20);//<=20 else digger disappears
     connect(clock, SIGNAL(timeout()), scene, SLOT(update()));
 }
 
 BigTheater::~BigTheater()
 {
     for (int i = 0; i < 10; i++)
-        delete[] sss[i];
+        delete[] scenery[i];
+
+    for (int i = 0; i < 27; i++)
+        delete imeralds[i];
     delete clock;
+    delete hero;
     delete scene;
 }
 
@@ -131,23 +108,8 @@ void BigTheater::keyPressEvent(QKeyEvent* e)
     case Qt::Key_F10:
         QApplication::quit();
         break;
-    case Qt::Key_Up:
-        if (hero->y() != 33)
-            hero->move(0, -speedY, Up);
-        break;
-    case Qt::Key_Down:
-        if (hero->y() != 627)
-            hero->move(0, speedY, Down);
-        break;
-    case Qt::Key_Left:
-        if (hero->x() != 37)
-            hero->move(-speedX, 0, Left);
-        break;
-    case Qt::Key_Right:
-        if (hero->x() != 1087)
-            hero->move(speedX, 0, Right);
-        break;
     default:
+        hero -> keyPressEvent(e);
         break;
     }
 }

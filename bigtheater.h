@@ -8,7 +8,8 @@
 #include <QTimer>
 #include <QPaintEvent>
 
-#include <actor.h>
+#include "digger.h"
+#include "imerald.h"
 #include "scenery.h"
 
 
@@ -18,13 +19,15 @@ class BigTheater : public QGraphicsView
     //int width = 750, height = 500;
     QGraphicsScene *scene;
     QTimer *clock;
-    Actor *hero /*= nullptr*/;
-    Scenery **sss/*[10][15]*/ = nullptr;
+    Digger *hero = nullptr;
 
 public:
     explicit BigTheater();
     ~BigTheater();
     void keyPressEvent(QKeyEvent* e);
+
+    Imerald **imeralds;
+    Scenery **scenery/*[10][15]*/ = nullptr;
 signals:
 
 public slots:

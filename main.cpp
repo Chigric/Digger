@@ -5,9 +5,8 @@ int main(int argc, char** argv)
 {
     QApplication a(argc, argv);
 
-    BigTheater w;
-
-    w.show();
+    BigTheater BT;
+    BT.show();
 
     QObject::connect(
             &a,SIGNAL(lastWindowClosed()),

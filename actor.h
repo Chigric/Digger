@@ -15,16 +15,17 @@
 #include <cmath>
 #include <iostream>
 
-#define speedX 15
-#define speedY 11
-enum Course{Up, Left, Down, Right};
+#include "define.h"
 
+class BigTheater;
 class Actor : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
+protected:
     QPixmap *sprite;
     QTimer *timer;
+    BigTheater* BT;
     int currentFrame;
 
     int course;
@@ -37,11 +38,14 @@ class Actor : public QObject, public QGraphicsPixmapItem
     int sizeOfPictureY;
     int dx,dy;
 
+    void whereIAm();//WhatIsBlock
+    void move(int dx_, int dy_, int c);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 public:
     Actor();
     ~Actor();
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void move(int dx_, int dy_, int c);
+
     QPoint pos() const;
     int x() const;
     int y() const;

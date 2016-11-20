@@ -5,8 +5,11 @@
 
 class Digger : public Actor
 {
+    void collidesInBlock();
 public:
-    Digger(QObject *parent);
+    Digger(BigTheater* Bt);
+    ~Digger();
+    void keyPressEvent(QKeyEvent* k);
 };
 
 #endif // DIGGER_H

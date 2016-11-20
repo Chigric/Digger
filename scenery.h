@@ -4,8 +4,11 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsLineItem>
 #include <QGraphicsItemGroup>
-#include <QBrush>
+//#include <QPoint>
+//#include <QBrush>
 #include <QPen>
+
+#include "define.h"
 
 class Pixel : public QGraphicsRectItem
 {
@@ -34,10 +37,14 @@ public:
     Scenery(int pos_x, int pos_y);
     ~Scenery();
 
+    QPoint getPos() const;
     void setPos(int pos_x, int pos_y);
     void setBox(bool b);
     void setVLine(bool v);
     void setHLine(bool h);
+    bool existBox() const;
+    bool existHLine() const;
+    bool existVLine() const;
 };
 
 

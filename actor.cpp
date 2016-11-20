@@ -1,29 +1,6 @@
 #include "actor.h"
 
-Actor::Actor() :  QGraphicsPixmapItem()
-{
-    //paramof_block*#block + center_of_block
-    OwnX = 75*0 + 37;
-    OwnY = 66*0 + 33;
-    Block_X = 0;
-    Block_Y = 0;
-
-    sizeOfItemX  = 51;
-    sizeOfItemY = 36;
-    sizeOfPictureX =  17;
-    sizeOfPictureY  = 12;
-
-    dx = 10;
-    dy = 0;
-
-    currentFrame = 0;
-    sprite = new QPixmap(":Digger.png", "png", Qt::PreferDither);
-    sprite->setMask(sprite->createHeuristicMask());
-    timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
-    timer -> start(50);
-//    std::cout << OwnX << "\t" << OwnY << "\t" << std::endl;
-}
+Actor::Actor() :  QGraphicsPixmapItem() {}
 
 void Actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
@@ -82,8 +59,16 @@ void Actor::move(int dx_, int dy_, int c)
         else if(Y > 33)
             OwnY -= speedY;
     }
+    whereIAm();
+    std::cout << Block_X <<"\t"<< Block_Y << std::endl;
 
-    switch (c) {
+//    QList<QGraphicsItem*> cItems = collidingItems();
+//    qDebug() << cItems.size();
+}
+
+void Actor::whereIAm()
+{
+    switch (course) {
     case Right:
         Block_X = (OwnX+sizeOfItemX/2) / 75;
         Block_Y = OwnY / 66;
@@ -102,11 +87,6 @@ void Actor::move(int dx_, int dy_, int c)
     default:
         break;
     }
-
-    std::cout << Block_X <<"\t"<< Block_Y << std::endl;
-
-    QList<QGraphicsItem*> cItems = collidingItems();
-//    qDebug() << cItems.size();
 }
 
 Actor::~Actor()
