@@ -27,7 +27,7 @@ public:
     void keyPressEvent(QKeyEvent* e);
 
     Imerald **imeralds;
-    Scenery **scenery/*[10][15]*/ = nullptr;
+    Scenery scenery[10][15] /*= nullptr*/;
 signals:
 
 public slots:

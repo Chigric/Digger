@@ -94,7 +94,6 @@ Pixel::Pixel(int pos_x, int pos_y) : QGraphicsRectItem()
 
 //    QColor color(225, 128, 64, 255); // orange
 //    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern)); // purple
-    //for test
     setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern));
 }
 

@@ -71,33 +71,35 @@ void Digger::keyPressEvent(QKeyEvent *k)
 void Digger::collidesInBlock()
 {
     switch(course){
+    //if I'am fast moving, it have dropped, but
+    //if I'am slow moving, it haven't dropped. //it was stating, after evolution **scenery into ***scenery //such as
     case Up:
         if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y() )
                 &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y())  )
-            BT->scenery[Block_Y+1][Block_X].setHLine(false);
-        if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfPixelY/2) )
-            BT->scenery[Block_Y][Block_X].setBox(false);
+            BT->scenery[Block_Y+1][Block_X].setHLine(false);//hLine
+        if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfPixelY/*/2*/) )
+            BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     case Down:
         if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() )
                 &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y())  )
-            BT->scenery[Block_Y][Block_X].setHLine(false);
-        if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfPixelY/2) )
-            BT->scenery[Block_Y][Block_X].setBox(false);
+            BT->scenery[Block_Y][Block_X].setHLine(false);//hLine
+        if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() /*+ sizeOfPixelY/2*/) )
+            BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     case Left:
         if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x() )
                 &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x())  )
-            BT->scenery[Block_Y][Block_X+1].setVLine(false);
-        if (( (OwnX-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfPixelX/2) )
-            BT->scenery[Block_Y][Block_X].setBox(false);
+            BT->scenery[Block_Y][Block_X+1].setVLine(false);//vLine
+        if (( (OwnX-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfPixelX/*/2*/) )
+            BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     case Right:
         if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() )
                 &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x())  )
-            BT->scenery[Block_Y][Block_X].setVLine(false);
-        if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfPixelX/2) )
-            BT->scenery[Block_Y][Block_X].setBox(false);
+            BT->scenery[Block_Y][Block_X].setVLine(false);//vLine
+        if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() /*+ sizeOfPixelX/2*/) )
+            BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     default:
         break;
