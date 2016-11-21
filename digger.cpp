@@ -74,11 +74,14 @@ void Digger::collidesInBlock()
     //if I'am fast moving, it have dropped, but
     //if I'am slow moving, it haven't dropped. //it was stating, after evolution **scenery into ***scenery //such as
     case Up:
-        if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y() )
-                &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y())  )
-            BT->scenery[Block_Y+1][Block_X].setHLine(false);//hLine
-        if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfPixelY/*/2*/) )
-            BT->scenery[Block_Y][Block_X].setBox(false);//box
+        if (Block_Y != 9){
+            if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y() )
+                    &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y())  )
+                BT->scenery[Block_Y+1][Block_X].setHLine(false);//hLine
+            if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfPixelY/*/2*/) )
+                BT->scenery[Block_Y][Block_X].setBox(false);//box
+            qDebug() << Block_Y+1 << BT->scenery[Block_Y+1][Block_X].getPos().y();
+        }
         break;
     case Down:
         if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() )
@@ -88,11 +91,14 @@ void Digger::collidesInBlock()
             BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     case Left:
-        if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x() )
-                &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x())  )
-            BT->scenery[Block_Y][Block_X+1].setVLine(false);//vLine
-        if (( (OwnX-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfPixelX/*/2*/) )
-            BT->scenery[Block_Y][Block_X].setBox(false);//box
+        if (Block_X != 14){
+            if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x() )
+                    &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x())  )
+                BT->scenery[Block_Y][Block_X+1].setVLine(false);//vLine
+            if (( (OwnX-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfPixelX/*/2*/) )
+                BT->scenery[Block_Y][Block_X].setBox(false);//box
+            qDebug() << Block_X + 1 << BT->scenery[Block_Y][Block_X+1].getPos().x();
+        }
         break;
     case Right:
         if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() )
