@@ -9,7 +9,6 @@
 #include <QPaintEvent>
 
 #include "digger.h"
-#include "imerald.h"
 #include "scenery.h"
 
 
@@ -26,12 +25,11 @@ public:
     ~BigTheater();
     void keyPressEvent(QKeyEvent* e);
 
-    Imerald **imeralds;
+//    Imerald **imeralds;
     Scenery scenery[10][15] /*= nullptr*/;
 signals:
 
 public slots:
-//    void paintMap();
 };
 
 #endif // BIGTHEATER_H

@@ -31,15 +31,15 @@ protected:
     int course;
     int Block_X;
     int Block_Y;
-    int OwnX, OwnY;
+    qreal OwnX, OwnY;
     int sizeOfItemX;
     int sizeOfItemY;
     int sizeOfPictureX;
     int sizeOfPictureY;
-    int dx,dy;
+    qreal dx,dy;
 
     void whereIAm();//WhatIsBlock
-    void move(int dx_, int dy_, int c);
+    void move(qreal dx_, qreal dy_, int c);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 public:
@@ -47,8 +47,8 @@ public:
     ~Actor();
 
     QPoint pos() const;
-    int x() const;
-    int y() const;
+    qreal x() const;
+    qreal y() const;
 
 private slots:
     void nextFrame();

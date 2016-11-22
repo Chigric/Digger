@@ -4,11 +4,10 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsLineItem>
 #include <QGraphicsItemGroup>
-//#include <QPoint>
-//#include <QBrush>
 #include <QPen>
 
 #include "define.h"
+#include "imerald.h"
 
 class Pixel : public QGraphicsRectItem
 {
@@ -28,9 +27,10 @@ class Scenery : public QGraphicsItemGroup
 {
     int X;
     int Y;
-    Pixel *box;
-    Border *vLine;
-    Border *hLine;
+    Pixel *box = nullptr;
+    Border *vLine = nullptr;
+    Border *hLine = nullptr;
+    Imerald *imerald = nullptr;
 
 public:
     Scenery();
@@ -42,6 +42,7 @@ public:
     void setBox(bool b);
     void setVLine(bool v);
     void setHLine(bool h);
+    void setImerald(bool i);
     bool existBox() const;
     bool existHLine() const;
     bool existVLine() const;

@@ -23,12 +23,13 @@ void Scenery::setBox(bool b)
         if (!box){
             box = new Pixel(X, Y);
             addToGroup(box);
-        } else box -> hide();
+        }
         qDebug() << "box is living";
     }
     else{
         if (box && !b){
             box -> hide();
+            setImerald(false);
 //            removeFromGroup(box);
 //            delete box;
 //            box = nullptr;
@@ -42,7 +43,7 @@ void Scenery::setHLine(bool h)
         if (!hLine){
             hLine = new Border(QPoint(X, Y), QPoint(X + sizeOfPixelX-1, Y));
             addToGroup(hLine);
-        } else hLine -> hide();
+        }
         qDebug() << "hLine is living";
     }
     else{
@@ -61,7 +62,7 @@ void Scenery::setVLine(bool v)
         if (!vLine){
             vLine = new Border(QPoint(X, Y), QPoint(X, Y + sizeOfPixelY - 1));
             addToGroup(vLine);
-        } else vLine -> hide();
+        }
         qDebug() << "vLine is living";
     }
     else{
@@ -74,11 +75,31 @@ void Scenery::setVLine(bool v)
     }
 }
 
+void Scenery::setImerald(bool i)
+{
+    if (i){
+        if (!imerald){
+            imerald = new Imerald(X ,Y);
+            addToGroup(imerald);
+        }
+        qDebug() << "It's imerald";
+    } else {
+        if (imerald && !i){
+            imerald->hide();
+//            removeFromGroup(imerald);
+//            delete imerald;
+//            imerald = nullptr;
+        }
+    }
+}
+
 bool Scenery::existBox() const { if (box) return true; else return false;}
 bool Scenery::existHLine() const { if (hLine) return true; else return false;}
 bool Scenery::existVLine() const { if (vLine) return true; else return false;}
 
 Scenery::~Scenery(){
+    if (imerald) {qDebug() << "imerald = " << imerald;
+        removeFromGroup(imerald); delete imerald;}
     if (box) {qDebug() << "box = " << box;
         removeFromGroup(box); delete box;}
     if (vLine) {qDebug() << "vLine = " << vLine;

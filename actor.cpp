@@ -24,20 +24,20 @@ void Actor::nextFrame()
 //    this->update(OwnX-sizeOfItemX/2, OwnY-sizeOfItemY/2, sizeOfItemX, sizeOfItemY);
 }
 
-int Actor::x() const {return OwnX;}
-int Actor::y() const {return OwnY;}
+qreal Actor::x() const {return OwnX;}
+qreal Actor::y() const {return OwnY;}
 QPoint Actor::pos() const
 {
     return QPoint(OwnX, OwnY);
 }
 
-void Actor::move(int dx_, int dy_, int c)
+void Actor::move(qreal dx_, qreal dy_, int c)
 {
     course = c;
     dx = dx_;
     dy = dy_;
-    int X = OwnX % 75;
-    int Y = OwnY % 66;
+    int X = int(OwnX) % 75;
+    int Y = int(OwnY) % 66;
 
     if (X == 37 && Y == 33){
         OwnX += dx_;

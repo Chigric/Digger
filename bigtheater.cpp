@@ -32,22 +32,13 @@ BigTheater::BigTheater() : QGraphicsView ()
     scene -> setSceneRect(0, 0, 1125, 660);
     scene -> setBackgroundBrush(Qt::black);
     setScene(scene);
-//    horizontalBlocks = new bool[15];//15*9
-//    verticalBlocks = new bool[10];//14*10
-//    scene1 = new char*[10];
-//    for (int i = 0; i < 10; i++)
-//        Field[i] = new char[15];
 
     qDebug() << "start entry";
 //    scenery = new Scenery**[10];
-    imeralds = new Imerald*[27];
-    bool yes;
-    int k = 0;
     for (int i = 9; i >= 0; i--){
 //        scenery[i] = new Scenery*[15];
         for (int j = 14; j >= 0; j--){
 //            scenery[i][j] = new Scenery(sizeOfPixelX * j, sizeOfPixelY * i);
-            yes = false;
             scenery[i][j].setPos(sizeOfPixelX * j, sizeOfPixelY * i);
             switch (Template[i][j]){
             case '1':
@@ -63,10 +54,12 @@ BigTheater::BigTheater() : QGraphicsView ()
                 qDebug() << "*";
                 //+ Imerald
                 scenery[i][j].setBox(true);
-                imeralds[k] = new Imerald(sizeOfPixelX * j, sizeOfPixelY * i);
-                yes = true;
+                scenery[i][j].setImerald(true);
+//                imeralds[k] = new Imerald(sizeOfPixelX * j, sizeOfPixelY * i);
+//                yes = true;
                 break;
             default:
+                qDebug() << '.';
                 break;
             }
 
@@ -75,10 +68,10 @@ BigTheater::BigTheater() : QGraphicsView ()
             if (( (Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && j)
                 scenery[i][j].setVLine(true);
             scene -> addItem(&scenery[i][j]);
-            if(yes){//temporarily, after Imerald are added into ***scenery
-                scene -> addItem(imeralds[k]);
-                ++k;
-            }
+//            if(yes){//temporarily, after Imerald are added into ***scenery
+//                scene -> addItem(imeralds[k]);
+//                ++k;
+//            }
         }
     }
     qDebug() << "end entry";
@@ -96,8 +89,8 @@ BigTheater::~BigTheater()
         for (int j = 0; j < 15; j++)
             scene ->removeItem(&scenery[i][j]);
 
-    for (int i = 0; i < 27; i++)
-        delete imeralds[i];
+//    for (int i = 0; i < 27; i++)
+//        delete imeralds[i];
     delete clock;
     delete hero;
     delete scene;
