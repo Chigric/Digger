@@ -55,8 +55,7 @@ BigTheater::BigTheater() : QGraphicsView ()
                 //+ Imerald
                 scenery[i][j].setBox(true);
                 scenery[i][j].setImerald(true);
-//                imeralds[k] = new Imerald(sizeOfPixelX * j, sizeOfPixelY * i);
-//                yes = true;
+//
                 break;
             default:
                 qDebug() << '.';
@@ -68,13 +67,12 @@ BigTheater::BigTheater() : QGraphicsView ()
             if (( (Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && j)
                 scenery[i][j].setVLine(true);
             scene -> addItem(&scenery[i][j]);
-//            if(yes){//temporarily, after Imerald are added into ***scenery
-//                scene -> addItem(imeralds[k]);
-//                ++k;
-//            }
         }
     }
     qDebug() << "end entry";
+
+    money = new Money(sizeOfPixelX * 6, sizeOfPixelY * 7);
+    scene -> addItem(money);
 
     hero = new Digger(this);
     scene -> addItem(hero);
@@ -89,8 +87,7 @@ BigTheater::~BigTheater()
         for (int j = 0; j < 15; j++)
             scene ->removeItem(&scenery[i][j]);
 
-//    for (int i = 0; i < 27; i++)
-//        delete imeralds[i];
+    delete money/*[i]*/;
     delete clock;
     delete hero;
     delete scene;

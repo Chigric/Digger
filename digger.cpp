@@ -3,7 +3,7 @@
 #include <QDebug>
 
 class BigTheater;
-Digger::Digger(BigTheater* Bt) : Actor()
+Digger::Digger(BigTheater* Bt) : Actor(OwnX, OwnY, "Digger.png")
 {
     this->BT = Bt;
     //paramof_block*#block + center_of_block

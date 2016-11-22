@@ -1,26 +1,12 @@
 #ifndef IMERALD_H
 #define IMERALD_H
 
-#include <QPainter>
-#include <QBitmap>
-#include <QGraphicsPixmapItem>
-#include "define.h"
+#include "graphicpixmapobject.h"
 
-class Imerald : public QGraphicsPixmapItem
+class Imerald : public GraphicPixmapObject
 {
-    QPixmap *sprite;
-
-    int X;
-    int Y;
-    int sizeOfItemX;
-    int sizeOfItemY;
-    int sizeOfPictureX;
-    int sizeOfPictureY;
 public:
-    QPoint getCentre() const;
-    Imerald(int pos_x, int pos_y);
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
+    Imerald(qreal pos_x, qreal pos_y);
 };
 
 #endif // IMERALD_H

@@ -12,7 +12,9 @@ SOURCES += \
     actor.cpp \
     scenery.cpp \
     digger.cpp \
-    imerald.cpp
+    imerald.cpp \
+    money.cpp \
+    graphicpixmapobject.cpp
 
 HEADERS += \
     bigtheater.h \
@@ -20,7 +22,9 @@ HEADERS += \
     scenery.h \
     digger.h \
     define.h \
-    imerald.h
+    imerald.h \
+    money.h \
+    graphicpixmapobject.h
 
 RESOURCES += \
     clothing.qrc

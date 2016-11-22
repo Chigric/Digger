@@ -1,6 +1,6 @@
 #include "actor.h"
 
-Actor::Actor() :  QGraphicsPixmapItem() {}
+Actor::Actor(qreal pos_x, qreal pos_y, QString imageName) : QObject(),  GraphicPixmapObject(pos_x, pos_y, imageName) {}
 
 void Actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
@@ -22,13 +22,6 @@ void Actor::nextFrame()
     currentFrame += 17;
     if (currentFrame >= 102 ) currentFrame = 0;
 //    this->update(OwnX-sizeOfItemX/2, OwnY-sizeOfItemY/2, sizeOfItemX, sizeOfItemY);
-}
-
-qreal Actor::x() const {return OwnX;}
-qreal Actor::y() const {return OwnY;}
-QPoint Actor::pos() const
-{
-    return QPoint(OwnX, OwnY);
 }
 
 void Actor::move(qreal dx_, qreal dy_, int c)

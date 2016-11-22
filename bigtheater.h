@@ -10,6 +10,7 @@
 
 #include "digger.h"
 #include "scenery.h"
+#include "money.h"
 
 
 class BigTheater : public QGraphicsView
@@ -25,7 +26,7 @@ public:
     ~BigTheater();
     void keyPressEvent(QKeyEvent* e);
 
-//    Imerald **imeralds;
+    Money *money;
     Scenery scenery[10][15] /*= nullptr*/;
 signals:
 
