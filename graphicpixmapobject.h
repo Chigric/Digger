@@ -19,7 +19,7 @@ protected:
     int sizeOfPictureX;
     int sizeOfPictureY;
 public:
-    GraphicPixmapObject(qreal pos_x, qreal pos_y, QString spriteName);
+    GraphicPixmapObject(int pos_x, int pos_y, QString spriteName);
 
     QPoint pos() const;
     qreal x() const;

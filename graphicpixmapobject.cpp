@@ -1,16 +1,12 @@
 #include "graphicpixmapobject.h"
 #include <QDebug>
 
-GraphicPixmapObject::GraphicPixmapObject(qreal pos_x, qreal pos_y, QString spriteName) : QGraphicsPixmapItem()
+GraphicPixmapObject::GraphicPixmapObject(int pos_x, int pos_y, QString spriteName) : QGraphicsPixmapItem()
 {
-    OwnX = pos_x + sizeOfPixelX/2;
-    OwnY = pos_y + sizeOfPixelY/2;
+    OwnX = pos_x*sizeOfBlockX + sizeOfBlockX/2;
+    OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
 
     QString str = ":";
-    if (spriteName == "Digger.png"){
-        qDebug() << "aaaaaaaaaaaa";
-//        str = ":";
-    }
     sprite = new QPixmap(str += spriteName, "png", Qt::PreferDither);
     sprite->setMask(sprite->createHeuristicMask());
 }

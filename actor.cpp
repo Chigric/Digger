@@ -1,18 +1,9 @@
 #include "actor.h"
 
-Actor::Actor(qreal pos_x, qreal pos_y, QString imageName) : QObject(),  GraphicPixmapObject(pos_x, pos_y, imageName) {}
-
-void Actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+Actor::Actor(int pos_x, int pos_y, QString imageName) : QObject(),  GraphicPixmapObject(pos_x, pos_y, imageName)
 {
-//    std::cout << "paint" << std::endl;
-    painter -> save();
-    painter -> translate(OwnX, OwnY);
-    painter -> rotate( atan2(dx, dy) *180/M_PI - 90 );
-
-    painter -> drawPixmap(-sizeOfItemX/2, -sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, 0, sizeOfPictureX, sizeOfPictureY);
-    painter -> restore();
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
+    Block_X = pos_x;
+    Block_Y = pos_y;
 }
 
 void Actor::nextFrame()

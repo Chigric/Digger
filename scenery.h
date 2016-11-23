@@ -25,8 +25,9 @@ public:
 
 class Scenery : public QGraphicsItemGroup
 {
-    int X;
-    int Y;
+    qreal X;
+    qreal Y;
+    int Block_X, Block_Y;
     Pixel *box = nullptr;
     Border *vLine = nullptr;
     Border *hLine = nullptr;

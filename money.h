@@ -7,8 +7,7 @@ class Money : public Actor
 {
 
 public:
-    Money(qreal pos_x, qreal pos_y);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    Money(int pos_x, int pos_y);
 };
 
 #endif // MONEY_H

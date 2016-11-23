@@ -39,7 +39,7 @@ BigTheater::BigTheater() : QGraphicsView ()
 //        scenery[i] = new Scenery*[15];
         for (int j = 14; j >= 0; j--){
 //            scenery[i][j] = new Scenery(sizeOfPixelX * j, sizeOfPixelY * i);
-            scenery[i][j].setPos(sizeOfPixelX * j, sizeOfPixelY * i);
+            scenery[i][j].setPos(j, i);
             switch (Template[i][j]){
             case '1':
                 qDebug() << "1";
@@ -71,10 +71,10 @@ BigTheater::BigTheater() : QGraphicsView ()
     }
     qDebug() << "end entry";
 
-    money = new Money(sizeOfPixelX * 6, sizeOfPixelY * 7);
+    money = new Money(1, 0);
     scene -> addItem(money);
 
-    hero = new Digger(this);
+    hero = new Digger(0, 0, this);
     scene -> addItem(hero);
 
     clock -> start(50);//<=20 else digger disappears

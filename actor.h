@@ -34,10 +34,9 @@ protected:
 
     void whereIAm();//WhatIsBlock
     void move(qreal dx_, qreal dy_, int c);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 public:
-    Actor(qreal pos_x, qreal pos_y, QString imageName);
+    Actor(int pos_x, int pos_y, QString imageName);
     ~Actor();
 
 private slots:

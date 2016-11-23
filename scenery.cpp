@@ -2,9 +2,9 @@
 #include <QDebug>
 //#define nullptr NULL
 
-Scenery::Scenery() :  QGraphicsItemGroup(), X(0), Y(0), box(0), vLine(0), hLine(0) {}
+Scenery::Scenery() :  QGraphicsItemGroup(), X(0), Y(0), Block_X(0), Block_Y(0), box(0), vLine(0), hLine(0) {}
 Scenery::Scenery(int pos_x, int pos_y) : QGraphicsItemGroup(),
-    X(pos_x), Y(pos_y), box(0), vLine(0), hLine(0) {}
+    X(pos_x * sizeOfBlockX), Y(pos_y * sizeOfBlockY), Block_X(pos_x), Block_Y(pos_y), box(0), vLine(0), hLine(0) {}
 
 QPoint Scenery::getPos() const
 {
@@ -13,8 +13,10 @@ QPoint Scenery::getPos() const
 
 void Scenery::setPos(int pos_x, int pos_y)
 {
-    X = pos_x; //time
-    Y = pos_y; //time
+    Block_X = pos_x;
+    Block_Y = pos_y;
+    X = pos_x * sizeOfBlockX; //time
+    Y = pos_y * sizeOfBlockY; //time
 }
 
 void Scenery::setBox(bool b)
@@ -41,7 +43,7 @@ void Scenery::setHLine(bool h)
 {
     if (h){
         if (!hLine){
-            hLine = new Border(QPoint(X, Y), QPoint(X + sizeOfPixelX-1, Y));
+            hLine = new Border(QPoint(X, Y), QPoint(X + sizeOfBlockX-1, Y));
             addToGroup(hLine);
         }
         qDebug() << "hLine is living";
@@ -60,7 +62,7 @@ void Scenery::setVLine(bool v)
 {
     if (v){
         if (!vLine){
-            vLine = new Border(QPoint(X, Y), QPoint(X, Y + sizeOfPixelY - 1));
+            vLine = new Border(QPoint(X, Y), QPoint(X, Y + sizeOfBlockY - 1));
             addToGroup(vLine);
         }
         qDebug() << "vLine is living";
@@ -79,7 +81,7 @@ void Scenery::setImerald(bool i)
 {
     if (i){
         if (!imerald){
-            imerald = new Imerald(X ,Y);
+            imerald = new Imerald(Block_X ,Block_Y);
             addToGroup(imerald);
         }
         qDebug() << "It's imerald";
@@ -111,8 +113,7 @@ Scenery::~Scenery(){
 
 Pixel::Pixel(int pos_x, int pos_y) : QGraphicsRectItem()
 {
-    setRect(pos_x, pos_y, sizeOfPixelX-1, sizeOfPixelY-1);
-
+      setRect(pos_x, pos_y, sizeOfBlockX-1, sizeOfBlockY-1);
 //    QColor color(225, 128, 64, 255); // orange
 //    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern)); // purple
     setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern));

@@ -3,14 +3,10 @@
 #include <QDebug>
 
 class BigTheater;
-Digger::Digger(BigTheater* Bt) : Actor(OwnX, OwnY, "Digger.png")
+Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digger.png")
 {
     this->BT = Bt;
     //paramof_block*#block + center_of_block
-    OwnX = 75*0 + 37;
-    OwnY = 66*0 + 33;
-    Block_X = 0;
-    Block_Y = 0;
 
     sizeOfItemX  = 51;
     sizeOfItemY = 36;
@@ -68,6 +64,19 @@ void Digger::keyPressEvent(QKeyEvent *k)
     }
 }
 
+void Digger::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+//    std::cout << "paint" << std::endl;
+    painter -> save();
+    painter -> translate(OwnX, OwnY);
+    painter -> rotate( atan2(dx, dy) *180/M_PI - 90 );
+
+    painter -> drawPixmap(-sizeOfItemX/2, -sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, 0, sizeOfPictureX, sizeOfPictureY);
+    painter -> restore();
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+}
+
 void Digger::collidesInBlock()
 {
     switch(course){
@@ -78,7 +87,7 @@ void Digger::collidesInBlock()
             if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y() )
                     &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y())  )
                 BT->scenery[Block_Y+1][Block_X].setHLine(false);//hLine
-            if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfPixelY/*/2*/) )
+            if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfBlockY/*/2*/) )
                 BT->scenery[Block_Y][Block_X].setBox(false);//box
             qDebug() << Block_Y+1 << BT->scenery[Block_Y+1][Block_X].getPos().y();
         }
@@ -87,7 +96,7 @@ void Digger::collidesInBlock()
         if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() )
                 &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y())  )
             BT->scenery[Block_Y][Block_X].setHLine(false);//hLine
-        if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() /*+ sizeOfPixelY/2*/) )
+        if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().y() /*+ sizeOfBlockY/2*/) )
             BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     case Left:
@@ -95,7 +104,7 @@ void Digger::collidesInBlock()
             if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x() )
                     &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x())  )
                 BT->scenery[Block_Y][Block_X+1].setVLine(false);//vLine
-            if (( (OwnX-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfPixelX/*/2*/) )
+            if (( (OwnX-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().x() + sizeOfBlockX/*/2*/) )
                 BT->scenery[Block_Y][Block_X].setBox(false);//box
             qDebug() << Block_X + 1 << BT->scenery[Block_Y][Block_X+1].getPos().x();
         }
@@ -104,7 +113,7 @@ void Digger::collidesInBlock()
         if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() )
                 &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x())  )
             BT->scenery[Block_Y][Block_X].setVLine(false);//vLine
-        if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() /*+ sizeOfPixelX/2*/) )
+        if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X].getPos().x() /*+ sizeOfBlockX/2*/) )
             BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     default:

@@ -6,7 +6,7 @@
 class Imerald : public GraphicPixmapObject
 {
 public:
-    Imerald(qreal pos_x, qreal pos_y);
+    Imerald(int pos_x, int pos_y);
 };
 
 #endif // IMERALD_H
