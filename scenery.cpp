@@ -81,7 +81,7 @@ void Scenery::setImerald(bool i)
 {
     if (i){
         if (!imerald){
-            imerald = new Imerald(Block_X ,Block_Y);
+            imerald = new Imerald(Block_X, Block_Y);
             addToGroup(imerald);
         }
         qDebug() << "It's imerald";

@@ -71,6 +71,22 @@ void Digger::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     painter -> translate(OwnX, OwnY);
     painter -> rotate( atan2(dx, dy) *180/M_PI - 90 );
 
+    switch (course) {
+    case Right:
+//        painter -> scale(1,1);
+        break;
+    case Up:
+        painter -> scale(-1,1);
+        break;
+    case Left:
+        painter -> scale(1,-1);
+        break;
+    case Down:
+        painter -> scale(-1,1);
+        break;
+    default:
+        break;
+    }
     painter -> drawPixmap(-sizeOfItemX/2, -sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, 0, sizeOfPictureX, sizeOfPictureY);
     painter -> restore();
     Q_UNUSED(option);

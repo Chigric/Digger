@@ -2,11 +2,6 @@
 #define ACTOR_H
 
 #include <QObject>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsItem>
-#include <QPixmap>
-#include <QPainter>
-#include <QBitmap>
 #include <QTimer>
 #include <QKeyEvent>
 

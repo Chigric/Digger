@@ -55,13 +55,11 @@ BigTheater::BigTheater() : QGraphicsView ()
                 //+ Imerald
                 scenery[i][j].setBox(true);
                 scenery[i][j].setImerald(true);
-//
                 break;
             default:
                 qDebug() << '.';
                 break;
             }
-
             if (( (Template[i-1][j] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && i)
                 scenery[i][j].setHLine(true);
             if (( (Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && j)
@@ -77,7 +75,7 @@ BigTheater::BigTheater() : QGraphicsView ()
     hero = new Digger(0, 0, this);
     scene -> addItem(hero);
 
-    clock -> start(50);//<=20 else digger disappears
+    clock -> start(50);//<20 else digger, money disappears
     connect(clock, SIGNAL(timeout()), scene, SLOT(update()));
 }
 

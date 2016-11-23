@@ -3,6 +3,7 @@
 
 #include "actor.h"
 
+
 class Digger : public Actor
 {
     void collidesInBlock();

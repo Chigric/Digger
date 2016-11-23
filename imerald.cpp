@@ -1,4 +1,5 @@
 #include "imerald.h"
+#include <QDebug>
 
 Imerald::Imerald(int pos_x, int pos_y) : GraphicPixmapObject(pos_x, pos_y, "Imerald.png")
 {
