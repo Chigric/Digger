@@ -17,7 +17,6 @@ class BigTheater : public QGraphicsView
 {
     Q_OBJECT
     //int width = 750, height = 500;
-    QGraphicsScene *scene;
     QTimer *clock;
     Digger *hero = nullptr;
 
@@ -26,6 +25,7 @@ public:
     ~BigTheater();
     void keyPressEvent(QKeyEvent* e);
 
+    QGraphicsScene *scene;
     Money *money;
     Scenery scenery[10][15] /*= nullptr*/;
 signals:

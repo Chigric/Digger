@@ -19,18 +19,28 @@ void Scenery::setPos(int pos_x, int pos_y)
     Y = pos_y * sizeOfBlockY; //time
 }
 
+void Scenery::hidebox(int i_, int j_) {box[i_][j_]->hide();}
+
 void Scenery::setBox(bool b)
 {
     if (b){
         if (!box){
-            box = new Pixel(X, Y);
-            addToGroup(box);
+            box = new Pixel**[numberOfBlockY];
+            for (int i = 0; i < numberOfBlockY; i++){
+                box[i] = new Pixel*[numberOfBlockX];
+                for (int j = 0; j < numberOfBlockX; j++){
+                    box[i][j] = new Pixel(X + j*sizeOfPixelX, Y + i*sizeOfPixelY);
+                    addToGroup(box[i][j]);
+                }
+            }
         }
         qDebug() << "box is living";
     }
     else{
         if (box && !b){
-            box -> hide();
+            for (int i = 0; i < numberOfBlockY; i++)
+                for (int j = 0; j < numberOfBlockX; j++)
+                    hidebox(i, j);
             setImerald(false);
 //            removeFromGroup(box);
 //            delete box;
@@ -102,8 +112,14 @@ bool Scenery::existVLine() const { if (vLine) return true; else return false;}
 Scenery::~Scenery(){
     if (imerald) {qDebug() << "imerald = " << imerald;
         removeFromGroup(imerald); delete imerald;}
-    if (box) {qDebug() << "box = " << box;
-        removeFromGroup(box); delete box;}
+    if (box) {
+        qDebug() << "box = " << box;
+        for (int i = 0; i < numberOfBlockY; i++)
+            for (int j = 0; j < numberOfBlockX; j++){
+                removeFromGroup(box[i][j]);
+                delete box[i][j];
+            }
+    }
     if (vLine) {qDebug() << "vLine = " << vLine;
         removeFromGroup(vLine); delete vLine;}
     if (hLine) {qDebug() << "hLine = " << hLine;
@@ -111,13 +127,34 @@ Scenery::~Scenery(){
     qDebug() << "delete Scenery";
 }
 
+uint Pixel::color = 0;
+
 Pixel::Pixel(int pos_x, int pos_y) : QGraphicsRectItem()
 {
-      setRect(pos_x, pos_y, sizeOfBlockX-1, sizeOfBlockY-1);
-//    QColor color(225, 128, 64, 255); // orange
-//    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern)); // purple
-    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern));
+    //    QColor color(225, 128, 64, 255); // orange
+    //    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern)); // purple
+
+    if(color != numberOfBlockX)
+        ++color;
+    else --color;
+
+    qreal penWidth = 1;//たぶん
+    OwnX = pos_x - sizeOfPixelX/2;
+    OwnY = pos_x - sizeOfPixelY/2;
+    setRect(pos_x, pos_y, sizeOfPixelX - penWidth, sizeOfPixelY - penWidth);
+    if ((color)%2 == 0) {
+        setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern));
+        setPen(QColor(163, 73, 164));
+    } else {
+        setBrush(QBrush(QColor(225, 128, 64), Qt::SolidPattern));
+        setPen(QColor(225, 128, 64));
+    }
+
+
+//    setPen(QPen(QColor(163, 73, 164)));
 }
+
+QPoint Pixel::getPos() {return QPoint(OwnX, OwnY);}
 
 Pixel::~Pixel()
 {
