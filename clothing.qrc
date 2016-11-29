@@ -6,5 +6,7 @@
         <file>Money.png</file>
         <file>MoveOfImerald.png</file>
         <file>Orange.png</file>
+        <file>Hobbin.png</file>
+        <file>Nobbin.png</file>
     </qresource>
 </RCC>

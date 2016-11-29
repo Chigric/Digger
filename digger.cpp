@@ -8,10 +8,11 @@ Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digg
     this->BT = Bt;
     //paramof_block*#block + center_of_block
 
-    sizeOfItemX  = 51;
-    sizeOfItemY = 36;
     sizeOfPictureX =  17;
     sizeOfPictureY  = 12;
+    sizeOfItemX  = sizeOfPictureX * 2;
+    sizeOfItemY = sizeOfPictureY * 2;
+
 
     dx = 10;
     dy = 0;
@@ -33,28 +34,29 @@ Digger::~Digger()
 
 void Digger::keyPressEvent(QKeyEvent *k)
 {
+    qDebug() << OwnX << OwnY << sizeOfBlockY/2 << sizeOfBlockY*10 - sizeOfBlockY/2 << sizeOfBlockX/2 << sizeOfBlockX*15 - sizeOfBlockX/2;
     switch (k -> key()){
     case Qt::Key_Up:
-        if (OwnY != 33){
+        if (OwnY != (sizeOfBlockY/2) + sizeOfBlockY){
             move(0, -speedY, Up);
             collidesInBlock();
         }
         break;
     case Qt::Key_Down:
-        if (OwnY != 627){
+        if (OwnY != (sizeOfBlockY*10 - sizeOfBlockY/2) + sizeOfBlockY){
             move(0, speedY, Down);
             collidesInBlock();
         }
         break;
     case Qt::Key_Left:
-        if (OwnX != 37){
+        if (OwnX != (sizeOfBlockX/2) + sizeOfBlockX){
             move(-speedX, 0, Left);
             collidesInBlock();
 
         }
         break;
     case Qt::Key_Right:
-        if (OwnX != 1087){
+        if (OwnX != (sizeOfBlockX*15 - sizeOfBlockX/2) + sizeOfBlockX){
             move(speedX, 0, Right);
             collidesInBlock();
         }
@@ -99,13 +101,13 @@ void Digger::collidesInBlock()
     //if I'am fast moving, it have dropped, but
     //if I'am slow moving, it haven't dropped. //it was stating, after evolution **scenery into ***scenery //such as
     case Up:
-        if (Block_Y != 9){
+        if (Block_Y != 10/*9*/){
             if (( (OwnY+sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y() )
                     &&!( (OwnY-sizeOfItemX/2) >= BT->scenery[Block_Y+1][Block_X].getPos().y())  )
                 BT->scenery[Block_Y+1][Block_X].setHLine(false);//hLine
             if (( (OwnY-sizeOfItemX/2) <= BT->scenery[Block_Y][Block_X].getPos().y() + sizeOfBlockY/*/2*/) )
                 BT->scenery[Block_Y][Block_X].setBox(false);//box
-            qDebug() << Block_Y+1 << BT->scenery[Block_Y+1][Block_X].getPos().y();
+            qDebug() << Block_Y << Block_Y+1 << BT->scenery[Block_Y+1][Block_X].getPos().y();
         }
         break;
     case Down:
@@ -116,7 +118,7 @@ void Digger::collidesInBlock()
             BT->scenery[Block_Y][Block_X].setBox(false);//box
         break;
     case Left:
-        if (Block_X != 14){
+        if (Block_X != 15/*14*/){
             if (( (OwnX+sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x() )
                     &&!( (OwnX-sizeOfItemX/2) >= BT->scenery[Block_Y][Block_X+1].getPos().x())  )
                 BT->scenery[Block_Y][Block_X+1].setVLine(false);//vLine

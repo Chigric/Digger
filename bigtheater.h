@@ -27,7 +27,7 @@ public:
 
     QGraphicsScene *scene;
     Money *money;
-    Scenery scenery[10][15] /*= nullptr*/;
+    Scenery scenery[12][17] /*= nullptr*/;
 signals:
 
 public slots:

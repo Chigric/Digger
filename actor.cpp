@@ -19,27 +19,29 @@ void Actor::move(qreal dx_, qreal dy_, int c)
     course = c;
     dx = dx_;
     dy = dy_;
-    int X = int(OwnX) % 75;
-    int Y = int(OwnY) % 66;
+    int X = int(OwnX) % sizeOfBlockX;
+    int Y = int(OwnY) % sizeOfBlockY;
+    int cen_X = 25;
+    int cen_Y = 22;
 
-    if (X == 37 && Y == 33){
+    if (X == cen_X && Y == cen_Y){
         OwnX += dx_;
         OwnY += dy_;
     }
     if(dy_){
-        if (X == 37 && Y != 33)
+        if (X == cen_X && Y != cen_Y)
             OwnY += dy_;
-        else if(X < 37)
+        else if(X < cen_X)
             OwnX += speedX;
-        else if(X > 37)
+        else if(X > cen_X)
             OwnX -= speedX;
     }
     if (dx_){
-        if (Y == 33 && X != 37)
+        if (Y == cen_Y && X != cen_X)
             OwnX += dx_;
-        else if(Y < 33)
+        else if(Y < cen_Y)
             OwnY += speedY;
-        else if(Y > 33)
+        else if(Y > cen_Y)
             OwnY -= speedY;
     }
     whereIAm();
@@ -53,20 +55,20 @@ void Actor::whereIAm()
 {
     switch (course) {
     case Right:
-        Block_X = (OwnX+sizeOfItemX/2) / 75;
-        Block_Y = OwnY / 66;
+        Block_X = (OwnX+sizeOfItemX/2) / sizeOfBlockX;
+        Block_Y = OwnY / sizeOfBlockY;
         break;
     case Left:
-        Block_X = (OwnX-sizeOfItemX/2) / 75;
-        Block_Y = OwnY / 66;
+        Block_X = (OwnX-sizeOfItemX/2) / sizeOfBlockX;
+        Block_Y = OwnY / sizeOfBlockY;
         break;
     case Up:
-        Block_X = OwnX / 75;
-        Block_Y = (OwnY-sizeOfItemX/2) / 66;
+        Block_X = OwnX / sizeOfBlockX;
+        Block_Y = (OwnY-sizeOfItemX/2) / sizeOfBlockY;
         break;
     case Down:
-        Block_X = OwnX / 75;
-        Block_Y = (OwnY+sizeOfItemX/2) / 66;
+        Block_X = OwnX / sizeOfBlockX;
+        Block_Y = (OwnY+sizeOfItemX/2) / sizeOfBlockY;
     default:
         break;
     }

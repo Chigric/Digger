@@ -12,17 +12,14 @@ class Pixel : public QGraphicsRectItem
 {
     int OwnX, OwnY;
 public:
-    Pixel(int pos_x, int pos_y);
+    Pixel(qreal pos_x, qreal pos_y, bool flag);
     QPoint getPos();
-    static uint color;
-    ~Pixel();
 };
 
 class Border : public QGraphicsLineItem
 {
 public:
     Border(QPoint start, QPoint finish);
-    ~Border();
 };
 
 class Scenery : public QGraphicsItemGroup
@@ -39,7 +36,6 @@ class Scenery : public QGraphicsItemGroup
 public:
     Scenery();
     Scenery(int pos_x, int pos_y);
-    ~Scenery();
 
     QPoint getPos() const;
     void setPos(int pos_x, int pos_y);

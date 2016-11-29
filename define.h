@@ -1,14 +1,16 @@
 #ifndef DEFINE_H
 #define DEFINE_H
 
-#define speedX 9.375//8 pressure for move on 1 block
-#define speedY 8.25 //8 pressure for move on 1 block
+#define sizeOfBlockX 50//75
+#define sizeOfBlockY 44//66
 enum Course{Left, Up,  Right, Down};
-#define sizeOfBlockX 75
-#define sizeOfBlockY 66
-#define numberOfBlockX 3
-#define numberOfBlockY 3
-#define sizeOfPixelX 25
-#define sizeOfPixelY 22
+#define numberOfBlockX 1//3 //int
+#define numberOfBlockY 1//3 //int
+#define sizeOfPixelX 50//25 //qreal
+#define sizeOfPixelY 44//22 //qreal
+
+
+#define speedX ((double)sizeOfBlockX/10)//8 pressure for move on 1 block
+#define speedY ((double)sizeOfBlockY/11)//8 pressure for move on 1 block
 
 #endif // DEFINE_H

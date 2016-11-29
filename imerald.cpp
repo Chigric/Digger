@@ -5,6 +5,6 @@ Imerald::Imerald(int pos_x, int pos_y) : GraphicPixmapObject(pos_x, pos_y, "Imer
 {
     sizeOfPictureX = 8;
     sizeOfPictureY = 7;
-    sizeOfItemX = 48;
-    sizeOfItemY = 42;
+    sizeOfItemX = sizeOfPictureX * 4;
+    sizeOfItemY = sizeOfPictureY * 4;
 }
