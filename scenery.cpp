@@ -19,28 +19,18 @@ void Scenery::setPos(int pos_x, int pos_y)
     Y = pos_y * sizeOfBlockY; //time
 }
 
-void Scenery::hidebox(int i_, int j_) {box[i_][j_]->hide();}
-
 void Scenery::setBox(bool b)
 {
     if (b){
         if (!box){
-            box = new Pixel**[numberOfBlockY];
-            for (int i = 0; i < numberOfBlockY; i++){
-                box[i] = new Pixel*[numberOfBlockX];
-                for (int j = 0; j < numberOfBlockX; j++){
-                    box[i][j] = new Pixel(X + j*sizeOfPixelX, Y + i*sizeOfPixelY, (j+i)%2);
-                    addToGroup(box[i][j]);
-                }
-            }
+            box = new Pixel(Block_X, Block_Y);
+            addToGroup(box);
         }
         qDebug() << "box is living";
     }
     else{
         if (box && !b){
-            for (int i = 0; i < numberOfBlockY; i++)
-                for (int j = 0; j < numberOfBlockX; j++)
-                    hidebox(i, j);
+            box -> hide();
             setImerald(false);
 //            removeFromGroup(box);
 //            delete box;
@@ -109,30 +99,25 @@ bool Scenery::existBox() const { if (box) return true; else return false;}
 bool Scenery::existHLine() const { if (hLine) return true; else return false;}
 bool Scenery::existVLine() const { if (vLine) return true; else return false;}
 
-Pixel::Pixel(qreal pos_x, qreal pos_y, bool flag) : QGraphicsRectItem()
+Pixel::Pixel(int pos_x, int pos_y) : GraphicPixmapObject(pos_x, pos_y, "Terra1.png") , start_X(0), start_Y(0), end_X(numberOfBlockX), end_Y(numberOfBlockY)
 {
-    //    QColor color(225, 128, 64, 255); // orange
-    //    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern)); // purple
-
-    qreal penWidth = 1;//たぶん
-    OwnX = pos_x - sizeOfPixelX/2;
-    OwnY = pos_x - sizeOfPixelY/2;
-    setRect(pos_x, pos_y, sizeOfPixelX - penWidth, sizeOfPixelY - penWidth);
-    if (flag) {
-        setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern));
-        setPen(QColor(163, 73, 164));
-    } else {
-        setBrush(QBrush(QColor(225, 128, 64), Qt::SolidPattern));
-        setPen(QColor(225, 128, 64));
-    }
-//    setPen(QPen(QColor(163, 73, 164)));
+    Block_X = pos_x;
+    Block_Y = pos_y;
 }
 
-QPoint Pixel::getPos() {return QPoint(OwnX, OwnY);}
-
+void Pixel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter -> drawPixmap(OwnX + (start_X * sizeOfPixelX - sizeOfBlockX/2), OwnY + (start_Y * sizeOfPixelY - sizeOfBlockY/2),
+                          (end_X * sizeOfPixelX), (end_Y * sizeOfPixelY),
+                          *sprite, start_X, start_Y, end_X, end_Y);
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+}
 
 Border::Border(QPoint start, QPoint finish) : QGraphicsLineItem()
 {
+    //    QColor color(225, 128, 64, 255); // orange
+    //    setBrush(QBrush(QColor(163, 73, 164), Qt::SolidPattern)); // purple
     setLine(start.x(), start.y(), finish.x(), finish.y());
     setPen(QPen(Qt::white));
 }

@@ -5,15 +5,19 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsItemGroup>
 
-#include "define.h"
+#include "graphicpixmapobject.h"
 #include "imerald.h"
+#include "define.h"
 
-class Pixel : public QGraphicsRectItem
+
+class Pixel : public GraphicPixmapObject
 {
-    int OwnX, OwnY;
+    int start_X, start_Y;
+    int end_X, end_Y;
+    int Block_X, Block_Y;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
-    Pixel(qreal pos_x, qreal pos_y, bool flag);
-    QPoint getPos();
+    Pixel(int pos_x, int pos_y);
 };
 
 class Border : public QGraphicsLineItem
@@ -28,7 +32,7 @@ class Scenery : public QGraphicsItemGroup
     qreal Y;
     int Block_X, Block_Y;
 
-    Pixel ***box = nullptr;
+    Pixel *box = nullptr;
     Border *vLine = nullptr;
     Border *hLine = nullptr;
     Imerald *imerald = nullptr;
@@ -40,7 +44,6 @@ public:
     QPoint getPos() const;
     void setPos(int pos_x, int pos_y);
     void setBox(bool b);
-    void hidebox(int i_, int j_);
     void setVLine(bool v);
     void setHLine(bool h);
     void setImerald(bool i);

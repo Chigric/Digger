@@ -18,6 +18,8 @@ protected:
     int sizeOfItemY;
     int sizeOfPictureX;
     int sizeOfPictureY;
+
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
     GraphicPixmapObject(int pos_x, int pos_y, QString spriteName);
 
@@ -25,7 +27,7 @@ public:
     qreal x() const;
     qreal y() const;
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 };
 
 #endif // GRAPHICOBJECT_H

@@ -8,7 +8,6 @@ GraphicPixmapObject::GraphicPixmapObject(int pos_x, int pos_y, QString spriteNam
 
     QString str = ":";
     sprite = new QPixmap(str += spriteName, "png", Qt::PreferDither);
-    sprite->setMask(sprite->createHeuristicMask());
 }
 
 void GraphicPixmapObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

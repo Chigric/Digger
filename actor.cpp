@@ -5,6 +5,7 @@ Actor::Actor(int pos_x, int pos_y, QString imageName) : QObject(),  GraphicPixma
 {
     Block_X = pos_x;
     Block_Y = pos_y;
+    sprite->setMask(sprite->createHeuristicMask());
 }
 
 void Actor::nextFrame()
