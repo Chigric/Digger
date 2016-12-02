@@ -69,6 +69,7 @@ BigTheater::BigTheater() : QGraphicsView ()
             scene -> addItem(&scenery[i][j]);
         }
     }
+
     qDebug() << "end entry";
 
     money = new Money(2, 1);
