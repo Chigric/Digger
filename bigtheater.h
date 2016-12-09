@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QTimerEvent>
 #include <QPaintEvent>
 
 #include "digger.h"
@@ -17,17 +18,19 @@ class BigTheater : public QGraphicsView
 {
     Q_OBJECT
     //int width = 750, height = 500;
-    QTimer *clock;
-    Digger *hero = nullptr;
+    Digger *hero;
+
+    void checkingCollision(Actor *Act_);
 
 public:
     explicit BigTheater();
     ~BigTheater();
     void keyPressEvent(QKeyEvent* e);
+    void timerEvent(QTimerEvent*);
 
     QGraphicsScene *scene;
     Money *money;
-    Scenery scenery[12][17] /*= nullptr*/;
+    Scenery scenery[blockOnMapY][blockOnMapX];
 signals:
 
 public slots:

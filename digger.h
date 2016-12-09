@@ -6,9 +6,8 @@
 
 class Digger : public Actor
 {
-    void collidesInBlock();
 public:
-    Digger(int pos_x, int pos_y, BigTheater* Bt);
+    Digger(int pos_x, int pos_y);
     ~Digger();
     void keyPressEvent(QKeyEvent* k);
 

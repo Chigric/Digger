@@ -17,10 +17,3 @@ void GraphicPixmapObject::paint(QPainter *painter, const QStyleOptionGraphicsIte
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
-
-qreal GraphicPixmapObject::x() const {return OwnX;}
-qreal GraphicPixmapObject::y() const {return OwnY;}
-QPoint GraphicPixmapObject::pos() const
-{
-    return QPoint(OwnX, OwnY);
-}

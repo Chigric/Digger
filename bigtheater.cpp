@@ -1,7 +1,7 @@
 #include "bigtheater.h"
 #include <QDebug>
 
-char Template[12][18] = {
+char Template[blockOnMapY][blockOnMapX+1] = {
 //012345678901234567
  "11111111111111111", //0
  "1.111$11111.....1", //1
@@ -25,22 +25,20 @@ BigTheater::BigTheater() : QGraphicsView ()
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(sizeOfBlockX*17, sizeOfBlockY*13);
+    setFixedSize(sizeOfBlockX * blockOnMapX, sizeOfBlockY * (blockOnMapY+1) );
     this->setFocus(); //トリビュートで
 
-    clock = new QTimer ();
     scene = new QGraphicsScene();
 
-    scene -> setSceneRect(0, sizeOfBlockY/2, sizeOfBlockX*17, sizeOfBlockY*10);
+    scene -> setSceneRect(0, 0, sizeOfBlockX * blockOnMapX, sizeOfBlockY * (blockOnMapY - 1) );
     scene -> setBackgroundBrush(Qt::black);
     setScene(scene);
 
     qDebug() << "start entry";
-//    scenery = new Scenery**[10];
-    for (int i = 11; i >= 0; i--){
-//        scenery[i] = new Scenery*[15];
-        for (int j = 16; j >= 0; j--){
-//            scenery[i][j] = new Scenery(sizeOfPixelX * j, sizeOfPixelY * i);
+//    scenery = new Scenery*[blockOnMapY-1];
+    for (int i = blockOnMapY-1; i >= 0; i--){
+        for (int j = blockOnMapX-1; j >= 0; j--){
+//            scenery[i] = new Scenery(sizeOfPixelX * j, sizeOfPixelY * i);
             scenery[i][j].setPos(j, i);
             switch (Template[i][j]){
             case '1':
@@ -75,23 +73,32 @@ BigTheater::BigTheater() : QGraphicsView ()
     money = new Money(2, 1);
     scene -> addItem(money);
 
-    hero = new Digger(8, 10, this);
+    hero = new Digger(8, 10);
     scene -> addItem(hero);
 
-    clock -> start(50);//<20 else digger, money disappears
-    connect(clock, SIGNAL(timeout()), scene, SLOT(update()));
+    startTimer(50);//<20 else digger, money disappears
 }
 
 BigTheater::~BigTheater()
 {
-    for (int i = 0; i < 12; i++)
-        for (int j = 0; j < 17; j++)
+    for (int i = 0; i < blockOnMapY; i++)
+        for (int j = 0; j < blockOnMapX; j++)
             scene ->removeItem(&scenery[i][j]);
 
     delete money/*[i]*/;
-    delete clock;
     delete hero;
     delete scene;
+}
+
+void BigTheater::timerEvent(QTimerEvent*)
+{
+    scene -> update();
+    checkingCollision(hero);
+}
+
+void BigTheater::checkingCollision(Actor* Act_)
+{
+    scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->pos(), Act_->getCourse());
 }
 
 void BigTheater::keyPressEvent(QKeyEvent* e)

@@ -19,20 +19,23 @@ class Actor : public QObject, public GraphicPixmapObject
 
 protected:
     QTimer *timer;
-    BigTheater* BT;
     int currentFrame;
 
-    int course;
+    Course course;
     int Block_X;
     int Block_Y;
     qreal dx,dy;
 
     void whereIAm();//WhatIsBlock
-    void move(qreal dx_, qreal dy_, int c);
+    void move(qreal dx_, qreal dy_, Course c);
 
 public:
     Actor(int pos_x, int pos_y, QString imageName);
     ~Actor();
+
+    inline int getBlock_X() const {return Block_X;}
+    inline int getBlock_Y() const {return Block_Y;}
+    inline Course getCourse() const {return course;}
 
 private slots:
     void nextFrame();

@@ -1,6 +1,5 @@
 #include "actor.h"
 
-class BigTheater;
 Actor::Actor(int pos_x, int pos_y, QString imageName) : QObject(),  GraphicPixmapObject(pos_x, pos_y, imageName)
 {
     Block_X = pos_x;
@@ -15,7 +14,7 @@ void Actor::nextFrame()
     if (currentFrame >= 102 ) currentFrame = 0;
 }
 
-void Actor::move(qreal dx_, qreal dy_, int c)
+void Actor::move(qreal dx_, qreal dy_, Course c)
 {
     course = c;
     dx = dx_;
