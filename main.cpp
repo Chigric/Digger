@@ -9,12 +9,14 @@ double distance(const QPoint& first, const QPoint& second)
     return sqrt(dx*dx + dy*dy);
 }
 
+BigTheater* BT;
+
 int main(int argc, char** argv)
 {
     QApplication a(argc, argv);
 
-    BigTheater BT;
-    BT.show();
+    BT = new BigTheater();
+    BT->show();
 
     QObject::connect(
             &a,SIGNAL(lastWindowClosed()),

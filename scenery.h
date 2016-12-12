@@ -9,7 +9,7 @@
 #include "imerald.h"
 #include "define.h"
 
-
+class BigTheater;
 class Pixel : public GraphicPixmapObject
 {
     int start_X, start_Y;
@@ -17,6 +17,10 @@ class Pixel : public GraphicPixmapObject
     int Block_X, Block_Y;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
+    inline int SX() const {return start_X;}
+    inline int SY() const {return start_Y;}
+    inline int EX() const {return end_X;}
+    inline int EY() const {return end_Y;}
     void grow_SX();
     void grow_SY();
     void fall_EX();
@@ -32,6 +36,8 @@ public:
 
 class Scenery : public QGraphicsItemGroup
 {
+    bool full;
+
     qreal X;
     qreal Y;
     int Block_X, Block_Y;
@@ -41,21 +47,27 @@ class Scenery : public QGraphicsItemGroup
     Border *hLine;
     Imerald *imerald;
 
+    BigTheater* BT;
+
 public:
     Scenery();
     Scenery(int pos_x, int pos_y);
 
     void eatingBlock(QPoint Act_, Course c_);
 
-    void setPos(int pos_x, int pos_y);
+    void setPos(int pos_x, int pos_y, BigTheater* Bt);
     void setBox(bool b);
     void setVLine(bool v);
     void setHLine(bool h);
     void setImerald(bool i);
-    inline bool existBox() const;
-    inline bool existHLine() const;
-    inline bool existVLine() const;
-    inline QPoint getPos() const;
+    inline bool isFull() const {return full;}
+    inline bool existBox() const { if (box) return true; else return false;}
+    inline bool existHLine() const { if (hLine) return true; else return false;}
+    inline bool existVLine() const { if (vLine) return true; else return false;}
+    inline QPoint getPos() const
+    {
+        return QPoint(X, Y);
+    }
 };
 
 

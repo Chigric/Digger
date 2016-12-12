@@ -1,17 +1,13 @@
 #include "actor.h"
 
-Actor::Actor(int pos_x, int pos_y, QString imageName) : QObject(),  GraphicPixmapObject(pos_x, pos_y, imageName)
+Actor::Actor(int pos_x, int pos_y, QString imageName, BigTheater* Bt) : QObject(),  GraphicPixmapObject(pos_x, pos_y, imageName)
 {
+    BT = Bt;
     Block_X = pos_x;
     Block_Y = pos_y;
+    f_CX = OwnX;
+    f_CY = OwnY;
     sprite->setMask(sprite->createHeuristicMask());
-}
-
-void Actor::nextFrame()
-{
-//    std::cout << "nextFrame " << currentFrame << std::endl;
-    currentFrame += 17;
-    if (currentFrame >= 102 ) currentFrame = 0;
 }
 
 void Actor::move(qreal dx_, qreal dy_, Course c)
@@ -21,8 +17,8 @@ void Actor::move(qreal dx_, qreal dy_, Course c)
     dy = dy_;
     int X = int(OwnX) % sizeOfBlockX;
     int Y = int(OwnY) % sizeOfBlockY;
-    int cen_X = 25;
-    int cen_Y = 22;
+    int cen_X = sizeOfBlockX/2;
+    int cen_Y = sizeOfBlockY/2;
 
     if (X == cen_X && Y == cen_Y){
         OwnX += dx_;
@@ -55,20 +51,28 @@ void Actor::whereIAm()
 {
     switch (course) {
     case Right:
-        Block_X = (OwnX+sizeOfItemX/2) / sizeOfBlockX;
-        Block_Y = OwnY / sizeOfBlockY;
+        f_CX = OwnX+sizeOfItemX/2;
+        Block_X = f_CX / sizeOfBlockX;
+        f_CY = OwnY;
+        Block_Y = f_CY / sizeOfBlockY;
         break;
     case Left:
-        Block_X = (OwnX-sizeOfItemX/2) / sizeOfBlockX;
-        Block_Y = OwnY / sizeOfBlockY;
+        f_CX = OwnX-sizeOfItemX/2;
+        Block_X = f_CX / sizeOfBlockX;
+        f_CY = OwnY;
+        Block_Y = f_CY / sizeOfBlockY;
         break;
     case Up:
-        Block_X = OwnX / sizeOfBlockX;
-        Block_Y = (OwnY-sizeOfItemX/2) / sizeOfBlockY;
+        f_CX = OwnX;
+        Block_X = f_CX / sizeOfBlockX;
+        f_CY = OwnY-sizeOfItemX/2;
+        Block_Y = f_CY / sizeOfBlockY;
         break;
     case Down:
-        Block_X = OwnX / sizeOfBlockX;
-        Block_Y = (OwnY+sizeOfItemX/2) / sizeOfBlockY;
+        f_CX = OwnX;
+        Block_X = f_CX / sizeOfBlockX;
+        f_CY = OwnY+sizeOfItemX/2;
+        Block_Y = f_CY / sizeOfBlockY;
     default:
         break;
     }

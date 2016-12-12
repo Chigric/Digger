@@ -1,7 +1,8 @@
 #include "digger.h"
 #include <QDebug>
+#include "bigtheater.h"
 
-Digger::Digger(int pos_x, int pos_y) : Actor(pos_x, pos_y, "Digger.png")
+Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digger.png", Bt)
 {
     //paramof_block*#block + center_of_block
 
@@ -16,12 +17,17 @@ Digger::Digger(int pos_x, int pos_y) : Actor(pos_x, pos_y, "Digger.png")
 
     course = Right;
     currentFrame = 0;
-    sprite = new QPixmap(":Digger.png", "png", Qt::PreferDither);
-    sprite->setMask(sprite->createHeuristicMask());
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
     timer -> start(50);
     qDebug() << "I'am Digger";
+}
+
+void Digger::nextFrame()
+{
+//    std::cout << "nextFrame " << currentFrame << std::endl;
+    currentFrame += 17;
+    if (currentFrame >= 102 ) currentFrame = 0;
 }
 
 Digger::~Digger()
@@ -31,7 +37,6 @@ Digger::~Digger()
 
 void Digger::keyPressEvent(QKeyEvent *k)
 {
-    qDebug() << OwnX << OwnY << sizeOfBlockY/2 << sizeOfBlockY*10 - sizeOfBlockY/2 << sizeOfBlockX/2 << sizeOfBlockX*15 - sizeOfBlockX/2;
     switch (k -> key()){
     case Qt::Key_Up:
         if (OwnY != (sizeOfBlockY/2) + sizeOfBlockY){

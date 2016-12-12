@@ -34,12 +34,22 @@ BigTheater::BigTheater() : QGraphicsView ()
     scene -> setBackgroundBrush(Qt::black);
     setScene(scene);
 
+    display = new QLabel(this);
+    display -> setGeometry(10,-5,1000,50);
+    D_Style = "QLabel{"
+                       "color: green;"
+                       "font-family: Courier, monospace;"
+                       "font-size:35px;"
+                       "}";
+    display -> setStyleSheet(D_Style);
+//    display -> setAttribute(Qt::WA_TranslucentBackground);
+
     qDebug() << "start entry";
 //    scenery = new Scenery*[blockOnMapY-1];
     for (int i = blockOnMapY-1; i >= 0; i--){
         for (int j = blockOnMapX-1; j >= 0; j--){
 //            scenery[i] = new Scenery(sizeOfPixelX * j, sizeOfPixelY * i);
-            scenery[i][j].setPos(j, i);
+            scenery[i][j].setPos(j, i, this);
             switch (Template[i][j]){
             case '1':
                 qDebug() << "1";
@@ -67,13 +77,14 @@ BigTheater::BigTheater() : QGraphicsView ()
             scene -> addItem(&scenery[i][j]);
         }
     }
-
     qDebug() << "end entry";
 
-    money = new Money(2, 1);
+    points = 0;
+
+    money = new Money(8, 7, this);
     scene -> addItem(money);
 
-    hero = new Digger(8, 10);
+    hero = new Digger(8, 10, this);
     scene -> addItem(hero);
 
     startTimer(50);//<20 else digger, money disappears
@@ -90,15 +101,19 @@ BigTheater::~BigTheater()
     delete scene;
 }
 
+void BigTheater::growPoints(uint p_) {points += p_;}
+
 void BigTheater::timerEvent(QTimerEvent*)
 {
     scene -> update();
     checkingCollision(hero);
+    display -> setText("Points: "+QString::number(points));
+//    qDebug() << points;
 }
 
 void BigTheater::checkingCollision(Actor* Act_)
 {
-    scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->pos(), Act_->getCourse());
+    scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->getF_C(), Act_->getCourse());
 }
 
 void BigTheater::keyPressEvent(QKeyEvent* e)
