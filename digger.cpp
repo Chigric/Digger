@@ -5,6 +5,8 @@
 Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digger.png", Bt)
 {
     //paramof_block*#block + center_of_block
+    speedX = ((double)sizeOfBlockX/10);//10 pressure for move on 1 block
+    speedY = ((double)sizeOfBlockY/10);//11 pressure for move on 1 block
 
     sizeOfPictureX =  17;
     sizeOfPictureY  = 12;
@@ -66,7 +68,6 @@ void Digger::keyPressEvent(QKeyEvent *k)
 
 void Digger::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-//    std::cout << "paint" << std::endl;
     painter -> save();
     painter -> translate(OwnX, OwnY);
     painter -> rotate( atan2(dx, dy) *180/M_PI - 90 );

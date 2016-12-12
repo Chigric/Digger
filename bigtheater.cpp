@@ -81,7 +81,7 @@ BigTheater::BigTheater() : QGraphicsView ()
 
     points = 0;
 
-    money = new Money(8, 7, this);
+    money = new Money(10, 1, this);
     scene -> addItem(money);
 
     hero = new Digger(8, 10, this);
@@ -108,7 +108,6 @@ void BigTheater::timerEvent(QTimerEvent*)
     scene -> update();
     checkingCollision(hero);
     display -> setText("Points: "+QString::number(points));
-//    qDebug() << points;
 }
 
 void BigTheater::checkingCollision(Actor* Act_)

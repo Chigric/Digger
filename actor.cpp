@@ -41,7 +41,6 @@ void Actor::move(qreal dx_, qreal dy_, Course c)
             OwnY -= speedY;
     }
     whereIAm();
-    std::cout << Block_X <<"\t"<< Block_Y << std::endl;
 
 //    QList<QGraphicsItem*> cItems = collidingItems();
 //    qDebug() << cItems.size();

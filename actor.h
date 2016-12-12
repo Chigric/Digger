@@ -23,6 +23,9 @@ protected:
     Course course;
     int Block_X;
     int Block_Y;
+    qreal speedX;
+    qreal speedY;
+
     qreal dx,dy;
     //front_Coord
     qreal f_CX;

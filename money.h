@@ -7,6 +7,9 @@ class Money : public Actor
 {
     Q_OBJECT
 
+    bool firstBlock;
+
+    int moving;
     int currentFrame;
     int currentAct;
     int wiggle;
@@ -16,7 +19,6 @@ public:
 private slots:
     void nextFrame();
     void checkingLowerBlock();
-    void fall();
 };
 
 #endif // MONEY_H
