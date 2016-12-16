@@ -26,7 +26,8 @@ BigTheater::BigTheater() : QGraphicsView ()
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(sizeOfBlockX * blockOnMapX, sizeOfBlockY * (blockOnMapY+1) );
-    this->setFocus(); //トリビュートで
+//    this->setFlag(QGraphicsItem::ItemIsFocusable);
+    this->setFocus();
 
     scene = new QGraphicsScene();
 
@@ -35,14 +36,13 @@ BigTheater::BigTheater() : QGraphicsView ()
     setScene(scene);
 
     display = new QLabel(this);
-    display -> setGeometry(10,-5,1000,50);
+    display -> setGeometry(0, -2.5,sizeOfBlockX*blockOnMapX,sizeOfBlockY);
     D_Style = "QLabel{"
                        "color: green;"
                        "font-family: Courier, monospace;"
                        "font-size:35px;"
                        "}";
     display -> setStyleSheet(D_Style);
-//    display -> setAttribute(Qt::WA_TranslucentBackground);
 
     qDebug() << "start entry";
 //    scenery = new Scenery*[blockOnMapY-1];
@@ -70,60 +70,172 @@ BigTheater::BigTheater() : QGraphicsView ()
                 qDebug() << '.';
                 break;
             }
-            if (( (Template[i-1][j] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && i)
-                scenery[i][j].setHLine(true);
-            if (( (Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && j)
-                scenery[i][j].setVLine(true);
+            if (i)
+                if (( (Template[i-1][j] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && i)
+                    scenery[i][j].setHLine(true);
+            if (j)
+                if (( (Template[i][j-1] != '.' && Template[i][j] == '.') || Template[i][j] != '.') && j)
+                    scenery[i][j].setVLine(true);
             scene -> addItem(&scenery[i][j]);
         }
     }
     qDebug() << "end entry";
 
-    points = 0;
+    score = 0;
+    lives_D = 3;
 
-    money = new Money(10, 1, this);
-    scene -> addItem(money);
+    timer = new QTimer();
+    timer -> start(25);//<20 else digger, money disappears
+    connect(timer, SIGNAL(timeout()), scene, SLOT(update(/*QRectF(x,y,w,h)*/)));
 
-    hero = new Digger(8, 10, this);
-    scene -> addItem(hero);
-
-    startTimer(50);//<20 else digger, money disappears
+    timer->singleShot(0, this, SLOT(startLevel()));
 }
+
+
 
 BigTheater::~BigTheater()
 {
     for (int i = 0; i < blockOnMapY; i++)
         for (int j = 0; j < blockOnMapX; j++)
             scene ->removeItem(&scenery[i][j]);
-
-    delete money/*[i]*/;
-    delete hero;
-    delete scene;
+    scene -> deleteLater();
 }
 
-void BigTheater::growPoints(uint p_) {points += p_;}
-
-void BigTheater::timerEvent(QTimerEvent*)
+void BigTheater::startLevel()
 {
-    scene -> update();
-    checkingCollision(hero);
-    display -> setText("Points: "+QString::number(points));
+    Emoji = "( ͡° ͜ʖ ͡°)";
+    if (lives_D == 1) Emoji = "( ≖ ͜ʖ ≖)";
+
+    money = new Money(10, 1, this);
+    scene -> addItem(money);
+    bags.push_back(money);
+
+    hero = new Digger(8, 10, this);
+    scene -> addItem(hero);
+    characters.push_back(hero);
+
+    startGame = true;
+
+    timer -> setInterval(25);
+    connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+}
+
+void BigTheater::clearLevel()
+{
+    scene -> removeItem(money);
+    money/*[i]*/ -> deleteLater();
+    scene -> removeItem(hero);
+    hero -> deleteLater();
+
+    cash.clear();
+    lethalSubjects.clear();
+    characters.clear();
+    bags.clear();
+
+    timer->singleShot(0, this, SLOT(startLevel()));
+}
+
+void BigTheater::growPoints(uint p_) {score += p_;}
+
+void BigTheater::frame()
+{
+    for (auto ch_ : characters)
+        checkingCollision(ch_);
+
+
+    display -> setText("<b>Score: "+QString::number(score)+
+                       "\tLives: "+QString::number(lives_D, 2)+
+                       "\t"+Emoji+"<b>");
+}
+
+void BigTheater::stopAction()
+{
+    disconnect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+    startGame = false;
+
+    for (auto ch_ : characters)
+        if (!dynamic_cast<Digger*>(ch_))
+            ch_->stopTimer();
+
+    timer->singleShot(3500, this, SLOT(clearLevel()));
 }
 
 void BigTheater::checkingCollision(Actor* Act_)
 {
-    scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->getF_C(), Act_->getCourse());
+    scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->getF_C(), Act_->pos(),Act_->getCourse());
+    for (auto i : bags)
+    {
+        if (i->itIsCollision(Act_->getF_C(), true)){
+            if (Act_ -> getCourse() == Right)
+                qDebug() << "from Right";
+            else if (Act_ -> getCourse() == Left){
+                i-> moveOnBlock(Left);
+                qDebug() << "from Left";
+            }
+            else if (Act_ -> getCourse() == Down){
+                Act_->stopHere();
+                qDebug() << "from Down";
+            }
+        }
+    }
+    //
+    for (auto i : cash)
+    {
+        if (i->itIsCollision(Act_->getF_C(), true)){
+            cash.removeOne(i);
+            i->deleteLater();
+            growPoints(costOfCash);
+        }
+    }
+    //falling bag
+    for (auto i : lethalSubjects)
+    {
+        if (i->itIsCollision(Act_->pos(), false) || Act_->itIsCollision(i->pos(), false)){
+            Act_->die();
+            if(dynamic_cast<Digger*>(Act_)){
+                --lives_D;
+                stopAction();
+                Emoji = "( ͡ᵔ ͜ʖ ͡ᵔ)";
+            }
+        }
+        qDebug() << i->pos() << Act_->pos();
+    }
 }
+
 
 void BigTheater::keyPressEvent(QKeyEvent* e)
 {
 //    std::cout << "keyPressEvent " << e->key() << std::endl;
     switch (e -> key()) {
+    case Qt::Key_Escape:
     case Qt::Key_F10:
         QApplication::quit();
         break;
+    case Qt::Key_Space:
+        stopAction();  // restart
     default:
-        hero -> keyPressEvent(e);
+        if (startGame)
+            hero -> keyPressEvent(e);
         break;
     }
+}
+
+void BigTheater::keyReleaseEvent(QKeyEvent *e)
+{
+    hero -> keyReleaseEvent(e);
+}
+
+void BigTheater::addToCash(Money *m_)
+{
+    cash.push_back(m_);
+}
+void BigTheater::addToLethalSubjects(Actor *a_)
+{
+    lethalSubjects.push_back(a_);
+    Emoji = "( ͠° ͟ʖ ͡°)";
+}
+
+void BigTheater::deleteFromLethalSubjects(Actor *a_)
+{
+    lethalSubjects.removeOne(a_);
 }

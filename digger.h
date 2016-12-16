@@ -6,12 +6,13 @@
 class Digger : public Actor
 {
     Q_OBJECT
-
-    int currentFrame;
 public:
     Digger(int pos_x, int pos_y, BigTheater* Bt);
     ~Digger();
     void keyPressEvent(QKeyEvent* k);
+    void keyReleaseEvent(QKeyEvent *k);
+
+    void die();
 
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 private slots:

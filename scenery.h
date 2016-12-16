@@ -12,15 +12,18 @@
 class BigTheater;
 class Pixel : public GraphicPixmapObject
 {
+    bool full;
     int start_X, start_Y;
     int end_X, end_Y;
     int Block_X, Block_Y;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
+    inline bool IsFull() const {return full;}
     inline int SX() const {return start_X;}
     inline int SY() const {return start_Y;}
     inline int EX() const {return end_X;}
     inline int EY() const {return end_Y;}
+    void setFull(bool f_);
     void grow_SX();
     void grow_SY();
     void fall_EX();
@@ -36,8 +39,6 @@ public:
 
 class Scenery : public QGraphicsItemGroup
 {
-    bool full;
-
     qreal X;
     qreal Y;
     int Block_X, Block_Y;
@@ -51,16 +52,16 @@ class Scenery : public QGraphicsItemGroup
 
 public:
     Scenery();
-    Scenery(int pos_x, int pos_y);
+    Scenery(int pos_x, int pos_y, BigTheater *Bt);
 
-    void eatingBlock(QPoint Act_, Course c_);
+    void eatingBlock(const QPoint Act_, const QPoint C_Act, const Course c_);
 
-    void setPos(int pos_x, int pos_y, BigTheater* Bt);
+    void setPos(int pos_x, int pos_y, BigTheater *Bt);
     void setBox(bool b);
     void setVLine(bool v);
     void setHLine(bool h);
     void setImerald(bool i);
-    inline bool isFull() const {return full;}
+    inline bool isBoxFull() const {return box->IsFull();}
     inline bool existBox() const { if (box) return true; else return false;}
     inline bool existHLine() const { if (hLine) return true; else return false;}
     inline bool existVLine() const { if (vLine) return true; else return false;}

@@ -18,13 +18,22 @@ void GraphicPixmapObject::paint(QPainter *painter, const QStyleOptionGraphicsIte
     Q_UNUSED(widget);
 }
 
-bool GraphicPixmapObject::itIsCollision(const QPoint& other)
+bool GraphicPixmapObject::itIsCollision(const QPoint& other, bool onBorders)
 {
     double y_ = OwnY - other.y();
     double x_ = OwnX - other.x();
     qreal dis = sqrt(x_*x_ + y_*y_);
-    if (dis < sizeOfItemX || dis < sizeOfItemY)
-        return true;
-    else
-        return false;
+    if (onBorders){
+        if (dis < sizeOfItemX/2 || dis < sizeOfItemY/2)
+            return true;
+        else
+            return false;
+    }
+    else{
+        if (dis < sizeOfItemX || dis < sizeOfItemY)
+            return true;
+        else
+            return false;
+    }
+
 }

@@ -8,7 +8,7 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
     speedX = ((double)sizeOfBlockX/10);//10 pressure for move on 1 block
     speedY = ((double)sizeOfBlockY/5);//10 pressure for move on 1 block
 
-    firstBlock = false;
+    flyingBlocks = 0;
 
     currentAct = 0;
     currentFrame = 0;
@@ -23,15 +23,22 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
 
     course = Right;
     timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), this, SLOT(/*nextFrame()*/checkingLowerBlock()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
     timer -> start(50);
 }
 //////////
 void Money::checkingLowerBlock()
 {
-    if (firstBlock ) { sizeOfItemX += 8; firstBlock = false; }
+    if (flyingBlocks == 1) { sizeOfItemX += 8; flyingBlocks = 0; }
+    else if (flyingBlocks > 0)
+    {
+        sizeOfItemX += 8; currentAct = 20;
+        BT->addToCash(this);
+        disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+        timer -> singleShot(12000, this, SLOT(deleteLater()));
+    }
 
-    if ( !BT->scenery[Block_Y+1][Block_X].isFull() ){
+    if ( !BT->scenery[Block_Y+1][Block_X].isBoxFull() ){
         disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
         connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
         currentAct = 10;
@@ -43,18 +50,21 @@ void Money::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 {
     painter->drawPixmap(OwnX-sizeOfItemX/2, OwnY-sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, currentAct, sizeOfPictureX, sizeOfPictureY);
 
-    qDebug() << speedY;
     if (moving){
         if (/*OwnY == (Block_Y+1)*sizeOfBlockY + sizeOfBlockY/2 + 4*/moving <= 5){
             move(0, speedY, Down);
-            BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), course);
+            BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
             ++moving;
         } else {
             moving = 0;
-            if ( BT->scenery[Block_Y+1][Block_X].isFull() )
+            if ( BT->scenery[Block_Y+1][Block_X].isBoxFull() ) {
                 connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
-            else moving = 1;
-            if (firstBlock){}
+                BT->deleteFromLethalSubjects(this);
+            }
+            else {
+                moving = 1;
+                ++flyingBlocks;
+            }
         }
     }
 
@@ -76,9 +86,9 @@ void Money::nextFrame()
             sizeOfItemX -= 8;
             timer -> setInterval(50);
             ++moving;
-            firstBlock = true;
+            flyingBlocks = 1;
             BT->scenery[Block_Y][Block_X].setBox(false);
+            BT->addToLethalSubjects(this);
         }
     }
 }
-

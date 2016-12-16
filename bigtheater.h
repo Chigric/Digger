@@ -18,14 +18,25 @@
 class BigTheater : public QGraphicsView
 {
     Q_OBJECT
-    //int width = 750, height = 500;
-    uint points;
+
+    bool startGame;
+    uint lives_D;
+    uint score;
+//    qreal x,y,w,h;
+
     Digger *hero;
     QString D_Style;
     QLabel *display;
+    QString Emoji;
+
+    QList<Money*> cash;
+    QList<Money*> bags;
+    QList<Actor*> lethalSubjects;
+    QList<Actor*> characters;
 
     void checkingCollision(Actor *Act_);
 
+    QTimer* timer;
 public:
 
     QGraphicsScene *scene;
@@ -36,10 +47,19 @@ public:
     ~BigTheater();
     void growPoints(uint p_);
     void keyPressEvent(QKeyEvent* e);
-    void timerEvent(QTimerEvent*);
+    void keyReleaseEvent(QKeyEvent* e);
+
+    void stopAction();
+
+    void addToCash(Money *m_);
+    void addToLethalSubjects(Actor *a_);
+    void deleteFromLethalSubjects(Actor* a_);
 signals:
 
 public slots:
+    void frame();
+    void startLevel();
+    void clearLevel();
 };
 
 #endif // BIGTHEATER_H

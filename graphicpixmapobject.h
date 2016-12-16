@@ -23,7 +23,10 @@ protected:
 public:
     GraphicPixmapObject(int pos_x, int pos_y, QString spriteName);
 
-    bool itIsCollision(const QPoint& other);
+    //On center
+    bool itIsCollision(const QPoint& other, bool onBorders);
+    //On border
+    bool itIsCollision_B(const QPoint& other);
 
     inline qreal x() const {return OwnX;}
     inline qreal y() const {return OwnY;}
