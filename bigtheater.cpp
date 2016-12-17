@@ -165,6 +165,7 @@ void BigTheater::checkingCollision(Actor* Act_)
     scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->getF_C(), Act_->pos(),Act_->getCourse());
     for (auto i : bags)
     {
+        Act_->stopHere(None);
         if (i->itIsCollision(Act_->getF_C(), true)){
             if (Act_ -> getCourse() == Right)
                 qDebug() << "from Right";
@@ -173,7 +174,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                 qDebug() << "from Left";
             }
             else if (Act_ -> getCourse() == Down){
-                Act_->stopHere();
+                Act_->stopHere(Down);
                 qDebug() << "from Down";
             }
         }
@@ -231,6 +232,7 @@ void BigTheater::addToCash(Money *m_)
 }
 void BigTheater::addToLethalSubjects(Actor *a_)
 {
+    bags.removeOne(dynamic_cast<Money*>(a_));
     lethalSubjects.push_back(a_);
     Emoji = "( ͠° ͟ʖ ͡°)";
 }

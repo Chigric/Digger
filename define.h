@@ -3,7 +3,7 @@
 
 #define sizeOfBlockX 50//75
 #define sizeOfBlockY 40//66
-enum Course{Left, Up,  Right, Down};
+enum Course{None, Left, Up,  Right, Down};
 #define numberOfPixelsX 5//3 //int
 #define numberOfPixelsY 4//3 //int
 #define sizeOfPixelX 10//25 //qreal

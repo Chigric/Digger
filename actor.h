@@ -24,6 +24,8 @@ protected:
     bool move_L;
     bool move_R;
 
+    Course stopMove;
+
     //animation
     int currentFrame;
     int currentAct;
@@ -60,7 +62,7 @@ public:
     inline QPoint getF_C() const {return QPoint(f_CX, f_CY);}
     inline Course getCourse() const {return course;}
 
-    virtual void stopHere();
+    virtual void stopHere(Course c_);
     virtual void die(){this->deleteLater();}
     virtual void stopTimer();
     virtual void beginTimer();

@@ -3,7 +3,7 @@
 
 Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.png", Bt)
 {
-    OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2 + 4;
+    OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
 
     speedX = ((double)sizeOfBlockX/10);//10 pressure for move on 1 block
     speedY = ((double)sizeOfBlockY/5);//10 pressure for move on 1 block
@@ -25,6 +25,7 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
     timer -> start(50);
+    enum status{cash};
 }
 //////////
 void Money::checkingLowerBlock()

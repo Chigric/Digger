@@ -11,6 +11,7 @@ Actor::Actor(int pos_x, int pos_y, QString imageName, BigTheater* Bt) : QObject(
     move_U = false;
     move_L = false;
     move_R = false;
+    stopMove = None;
     msec = 50;
     sprite->setMask(sprite->createHeuristicMask());
 }
@@ -85,13 +86,10 @@ void Actor::whereIAm()
     }
 }
 
-void Actor::stopHere()
+void Actor::stopHere(Course c_)
 {
-    qDebug() << "stopHere()";
-    move_U = false;
-    move_D = false;
-    move_L = false;
-    move_R = false;
+    qDebug() << "stopHere()" << c_;
+    stopMove = c_;
 }
 
 void Actor::moveOnBlock(const Course c_)
@@ -115,17 +113,17 @@ void Actor::moveOnBlock(const Course c_)
 
 void Actor::frame()
 {
-    if (move_U && (OwnY != (sizeOfBlockY/2) + sizeOfBlockY) ) {
+    if (move_U && (OwnY != (sizeOfBlockY/2) + sizeOfBlockY) && stopMove != Up) {
         move(0, -speedY, Up);
     }
-    if (move_D && (OwnY != (sizeOfBlockY*(blockOnMapY-2) - sizeOfBlockY/2) + sizeOfBlockY)){
+    if (move_D && (OwnY != (sizeOfBlockY*(blockOnMapY-1) - sizeOfBlockY/2)) && stopMove != Down){
         qDebug() << move_D;
         move(0, speedY, Down);
     }
-    if (move_L && (OwnX != (sizeOfBlockX/2) + sizeOfBlockX)){
+    if (move_L && (OwnX != (sizeOfBlockX/2) + sizeOfBlockX) && stopMove != Left){
         move(-speedX, 0, Left);
     }
-    if (move_R && (OwnX != (sizeOfBlockX*(blockOnMapX-2) - sizeOfBlockX/2) + sizeOfBlockX)){
+    if (move_R && (OwnX != (sizeOfBlockX*(blockOnMapX-1) - sizeOfBlockX/2)) && stopMove != Right){
         move(speedX, 0, Right);
     }
 }
