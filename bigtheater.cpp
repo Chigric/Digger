@@ -107,22 +107,25 @@ BigTheater::~BigTheater()
 
 void BigTheater::startLevel()
 {
-    Emoji = "( ͡° ͜ʖ ͡°)";
-    if (lives_D == 1) Emoji = "( ≖ ͜ʖ ≖)";
+    if(lives_D){
+        Emoji = "( ͡° ͜ʖ ͡°)";
+        if (lives_D == 1) Emoji = "( ≖ ͜ʖ ≖)";
 
-    hero = new Digger(8, 10, this);
-    scene -> addItem(hero);
-    characters.push_back(hero);
+        hero = new Digger(8, 10, this);
+        scene -> addItem(hero);
+        characters.push_back(hero);
 
-    enemy = new Nobbin(15, 1, this);
-    scene -> addItem(enemy);
-    characters.push_back(enemy);
+        enemy = new Nobbin(15, 1, this);
+        scene -> addItem(enemy);
+        characters.push_back(enemy);
 
-    startGame = true;
-    stopGame = false;
+        startGame = true;
+        stopGame = false;
 
-    timer -> setInterval(25);
-    connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+        timer -> setInterval(25);
+        connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+    }
+    else {Emoji = "Game_Over"; stopGame = true; timer->singleShot(0, this, SLOT(frame()));}
 }
 
 void BigTheater::clearLevel()
@@ -188,6 +191,15 @@ void BigTheater::checkingCollision(Actor* Act_)
 {
     if (dynamic_cast<Digger*>(Act_))
         scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->getF_C(), Act_->pos(),Act_->getCourse());
+    else{
+        if (hero -> itIsCollision(Act_->getF_C(), true))
+        {
+            hero -> die();
+            --lives_D;
+            stopAction();
+            Emoji = "( ͡ᵔ ͜ʖ ͡ᵔ)";
+        }
+    }
     for (auto i : money)
     {
         switch (i->getStat()) {
@@ -262,10 +274,26 @@ void BigTheater::keyPressEvent(QKeyEvent* e)
             break;
         }
     }
-    else if(e->key() == Qt::Key_Space) beginAllAction();
+    else
+        switch (e -> key()) {
+        case Qt::Key_Escape:
+        case Qt::Key_F10:
+            QApplication::quit();
+            break;
+        case Qt::Key_Space:
+            beginAllAction();
+        default:
+            break;
+        }
 }
 
 void BigTheater::keyReleaseEvent(QKeyEvent *e)
 {
     hero -> keyReleaseEvent(e);
+}
+
+void BigTheater::deleteFromCharacters(Actor *a_)
+{
+    scene -> removeItem(a_);
+    characters.removeOne(a_);
 }

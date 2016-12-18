@@ -73,3 +73,8 @@ void Nobbin::checkAfterMove()
         qDebug() << n << startMove;
     }
 }
+
+void Nobbin::die()
+{
+    BT->deleteFromCharacters(this);
+}

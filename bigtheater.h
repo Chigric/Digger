@@ -55,9 +55,7 @@ public:
     void stopAllAction();
     void beginAllAction();
 
-    void addToCash(Money *m_);
-    void addToLethalSubjects(Actor *a_);
-    void deleteFromLethalSubjects(Actor* a_);
+    void deleteFromCharacters(Actor* a_);
 signals:
 
 public slots:
