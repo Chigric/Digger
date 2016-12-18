@@ -5,7 +5,7 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
 {
     OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
 
-    speedX = ((double)sizeOfBlockX/10);//10 pressure for move on 1 block
+    speedX = ((double)sizeOfBlockX/5);//10 pressure for move on 1 block
     speedY = ((double)sizeOfBlockY/5);//10 pressure for move on 1 block
 
     flyingBlocks = 0;
@@ -13,6 +13,8 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
     currentAct = 0;
     currentFrame = 0;
     wiggle = 0;
+    wiggle_F = 3;
+    compression = 8;
     moving = 0;
 
     sizeOfPictureX = 13;
@@ -22,28 +24,82 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
     sizeOfItemY = 30;//45;
 
     course = Right;
-    timer = new QTimer();
+    status = Passive;
     connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
-    timer -> start(50);
-    enum status{cash};
 }
 //////////
 void Money::checkingLowerBlock()
 {
-    if (flyingBlocks == 1) { sizeOfItemX += 8; flyingBlocks = 0; }
-    else if (flyingBlocks > 0)
+//    stopHere(Down);
+
+    qDebug() << flyingBlocks;
+
+    if (flyingBlocks == 1) { sizeOfItemX += compression; flyingBlocks = 0; status = Passive;}
+    else if (flyingBlocks > 1)
     {
-        sizeOfItemX += 8; currentAct = 20;
-        BT->addToCash(this);
+        sizeOfItemX += compression; currentAct = 20;
+//        BT->addToCash(this);
+        status = Cash;
         disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
         timer -> singleShot(12000, this, SLOT(deleteLater()));
+        qDebug() << status;
     }
 
     if ( !BT->scenery[Block_Y+1][Block_X].isBoxFull() ){
-        disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+//        disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+//        connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+        moveOnBlock(Down);
+//        currentAct = 10;
+//        timer -> setInterval(250);
+    }
+}
+
+void Money::moveOnBlock(const Course c_)
+{
+    if (c_ != None) disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+
+    if (c_ == Down)
+    {
+        stopHere(Down);
         connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
         currentAct = 10;
         timer -> setInterval(250);
+    }
+
+    Actor::moveOnBlock(c_);
+}
+
+void Money::frame()
+{
+    if (startMove == Down && flyingBlocks) BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
+    Actor::frame();
+}
+
+void Money::checkAfterMove()
+{
+//    switch (startMove) {
+//    case Left:
+//        stopHere(Left);
+//        break;
+//    case Right:
+//        stopHere(Right);
+//        break;
+//    default:
+//        break;
+//    }
+
+    qDebug() << "check";
+    if ( BT->scenery[Block_Y+1][Block_X].isBoxFull() )
+    {
+        qDebug() << "check YES" << Block_Y+1 << Block_X;
+        connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+        moveOnBlock(None);
+    }
+    else
+    {
+        qDebug() << "check NO" << Block_Y+1 << Block_X;
+        if (course == Down) ++flyingBlocks;
+        else moveOnBlock(Down);
     }
 }
 
@@ -51,23 +107,23 @@ void Money::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 {
     painter->drawPixmap(OwnX-sizeOfItemX/2, OwnY-sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, currentAct, sizeOfPictureX, sizeOfPictureY);
 
-    if (moving){
-        if (/*OwnY == (Block_Y+1)*sizeOfBlockY + sizeOfBlockY/2 + 4*/moving <= 5){
-            move(0, speedY, Down);
-            BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
-            ++moving;
-        } else {
-            moving = 0;
-            if ( BT->scenery[Block_Y+1][Block_X].isBoxFull() ) {
-                connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
-                BT->deleteFromLethalSubjects(this);
-            }
-            else {
-                moving = 1;
-                ++flyingBlocks;
-            }
-        }
-    }
+//    if (moving){
+//        if (/*OwnY == (Block_Y+1)*sizeOfBlockY + sizeOfBlockY/2 + 4*/moving <= 5){
+//            move(0, speedY, Down);
+//            BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
+//            ++moving;
+//        } else {
+//            moving = 0;
+//            if ( BT->scenery[Block_Y+1][Block_X].isBoxFull() ) {
+//                connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+//                BT->deleteFromLethalSubjects(this);
+//            }
+//            else {
+//                moving = 1;
+//                ++flyingBlocks;
+//            }
+//        }
+//    }
 
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -76,20 +132,22 @@ void Money::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 void Money::nextFrame()
 {
     if (currentAct == 10){
-        if (wiggle < 3){
+        if (wiggle < wiggle_F){
             currentFrame += sizeOfPictureX;
-            if (currentFrame >= sizeOfPictureX*3) currentFrame = 0;
+            if (currentFrame >= sizeOfPictureX*wiggle_F) currentFrame = 0;
             ++wiggle;
         } else {
             disconnect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
             wiggle = 0;
             currentAct = 0;
-            sizeOfItemX -= 8;
-            timer -> setInterval(50);
-            ++moving;
+            sizeOfItemX -= compression;
+            timer -> setInterval(msec);
+//            ++moving;
             flyingBlocks = 1;
             BT->scenery[Block_Y][Block_X].setBox(false);
-            BT->addToLethalSubjects(this);
+//            BT->addToLethalSubjects(this);
+            stopHere(None);
+            status = Moving;
         }
     }
 }

@@ -106,15 +106,35 @@ void BigTheater::startLevel()
     Emoji = "( ͡° ͜ʖ ͡°)";
     if (lives_D == 1) Emoji = "( ≖ ͜ʖ ≖)";
 
-    money = new Money(10, 1, this);
-    scene -> addItem(money);
-    bags.push_back(money);
+//    Enemy **enemies = new Enemy*[enemyNumber];
+//    for (int i = 0; i < enemyNumber; ++i){
+//        QPoint nm = map->getMatrixS();
+//        //qDebug() << nm;
+//        nm = QPoint((rand()%(nm.x()-3))+2, (rand()%(nm.y()-3))+2);
+//        nm = game->convertTOpixels(nm);
+//        enemies[i] = new Enemy(nm.x() , nm.y(), 10, 10, game);
+//        enemies[i]->setSpeed(enemySpeed);
+//    }
+
+    auto m = new Money(10, 1, this);
+    money.push_back(m);
+    scene->addItem(m);
+
+//    money.push_back((new Money(10, 1, this)));
+//    scene -> addItem(*money.end());
+
+//    money = new Money*[1];
+//    for (int i = 0; i < 1; i++){
+//        money[i] = new Money(10, 1, this);
+//        scene -> addItem(money[i]);
+//    }
 
     hero = new Digger(8, 10, this);
     scene -> addItem(hero);
     characters.push_back(hero);
 
     startGame = true;
+    stopGame - false;
 
     timer -> setInterval(25);
     connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
@@ -122,15 +142,23 @@ void BigTheater::startLevel()
 
 void BigTheater::clearLevel()
 {
-    scene -> removeItem(money);
-    money/*[i]*/ -> deleteLater();
-    scene -> removeItem(hero);
-    hero -> deleteLater();
+    for (auto i : money)
+    {
+        scene -> removeItem(i);
+//        i->deleteLater();
+//        i = nullptr;
+    }
+    money.clear();
 
-    cash.clear();
-    lethalSubjects.clear();
+    for (auto i : characters)
+    {
+        scene -> removeItem(i);
+//        i->deleteLater();
+//        i = nullptr;
+    }
     characters.clear();
-    bags.clear();
+//    scene -> removeItem(hero);
+//    hero -> deleteLater();
 
     timer->singleShot(0, this, SLOT(startLevel()));
 }
@@ -148,6 +176,29 @@ void BigTheater::frame()
                        "\t"+Emoji+"<b>");
 }
 
+void BigTheater::stopAllAction()
+{
+    disconnect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+    stopGame = true;
+
+    for (auto ch_ : characters)
+        ch_ -> stopTimer();
+
+    for (auto i : money)
+        i -> stopTimer();
+}
+
+void BigTheater::beginAllAction()
+{
+    connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+    stopGame = false;
+
+    for (auto ch_ : characters)
+        ch_ -> beginTimer();
+    for (auto i : money)
+        i -> beginTimer();
+}
+
 void BigTheater::stopAction()
 {
     disconnect(timer, SIGNAL(timeout()), this, SLOT(frame()));
@@ -163,43 +214,59 @@ void BigTheater::stopAction()
 void BigTheater::checkingCollision(Actor* Act_)
 {
     scenery[Act_->getBlock_Y()][Act_->getBlock_X()].eatingBlock(Act_->getF_C(), Act_->pos(),Act_->getCourse());
-    for (auto i : bags)
+    for (auto i : money)
     {
-        Act_->stopHere(None);
-        if (i->itIsCollision(Act_->getF_C(), true)){
-            if (Act_ -> getCourse() == Right)
-                qDebug() << "from Right";
-            else if (Act_ -> getCourse() == Left){
-                i-> moveOnBlock(Left);
-                qDebug() << "from Left";
+        switch (i->getStat()) {
+        case 0:
+            //just bag
+            Act_ -> stopHere(None);
+            if (i->itIsCollision(Act_->getF_C(), true)){
+                qDebug() << "Collision";
+
+                switch (Act_ -> getCourse()) {
+                case Right:
+                    i -> moveOnBlock(Right);
+                    qDebug() << "from Right";
+                    break;
+                case Left:
+                    i -> moveOnBlock(Left);
+                    qDebug() << "from Left";
+                    break;
+                case Down:
+                    Act_ -> stopHere(Down);
+                    qDebug() << "from Down";
+                    break;
+                default:
+                    break;
+                }
             }
-            else if (Act_ -> getCourse() == Down){
-                Act_->stopHere(Down);
-                qDebug() << "from Down";
+            break;
+        case 1:
+            //falling bag
+            if (i->itIsCollision(Act_->pos(), false) || Act_->itIsCollision(i->pos(), false)){
+                Act_->die();
+                if(dynamic_cast<Digger*>(Act_)){
+                    --lives_D;
+                    stopAction();
+                    Emoji = "( ͡ᵔ ͜ʖ ͡ᵔ)";
+                }
             }
-        }
-    }
-    //
-    for (auto i : cash)
-    {
-        if (i->itIsCollision(Act_->getF_C(), true)){
-            cash.removeOne(i);
-            i->deleteLater();
-            growPoints(costOfCash);
-        }
-    }
-    //falling bag
-    for (auto i : lethalSubjects)
-    {
-        if (i->itIsCollision(Act_->pos(), false) || Act_->itIsCollision(i->pos(), false)){
-            Act_->die();
-            if(dynamic_cast<Digger*>(Act_)){
-                --lives_D;
-                stopAction();
-                Emoji = "( ͡ᵔ ͜ʖ ͡ᵔ)";
+            qDebug() << i->pos() << Act_->pos();
+            break;
+        case 2:
+            //cash
+            if (i->itIsCollision(Act_->getF_C(), true)){
+//                qDebug() << &i << &money;
+                scene -> removeItem(i);
+                money.removeOne(i);
+//                i->deleteLater();
+//                i = nullptr;
+                growPoints(costOfCash);
             }
+            break;
+        default:
+            break;
         }
-        qDebug() << i->pos() << Act_->pos();
     }
 }
 
@@ -207,18 +274,21 @@ void BigTheater::checkingCollision(Actor* Act_)
 void BigTheater::keyPressEvent(QKeyEvent* e)
 {
 //    std::cout << "keyPressEvent " << e->key() << std::endl;
-    switch (e -> key()) {
-    case Qt::Key_Escape:
-    case Qt::Key_F10:
-        QApplication::quit();
-        break;
-    case Qt::Key_Space:
-        stopAction();  // restart
-    default:
-        if (startGame)
-            hero -> keyPressEvent(e);
-        break;
+    if (!stopGame){
+        switch (e -> key()) {
+        case Qt::Key_Escape:
+        case Qt::Key_F10:
+            QApplication::quit();
+            break;
+        case Qt::Key_Space:
+            stopAllAction();
+        default:
+            if (startGame)
+                hero -> keyPressEvent(e);
+            break;
+        }
     }
+    else if(e->key() == Qt::Key_Space) beginAllAction();
 }
 
 void BigTheater::keyReleaseEvent(QKeyEvent *e)
@@ -226,18 +296,17 @@ void BigTheater::keyReleaseEvent(QKeyEvent *e)
     hero -> keyReleaseEvent(e);
 }
 
-void BigTheater::addToCash(Money *m_)
-{
-    cash.push_back(m_);
-}
-void BigTheater::addToLethalSubjects(Actor *a_)
-{
-    bags.removeOne(dynamic_cast<Money*>(a_));
-    lethalSubjects.push_back(a_);
-    Emoji = "( ͠° ͟ʖ ͡°)";
-}
+//void BigTheater::addToCash(Money *m_)
+//{
+//    cash.push_back(m_);
+//}
+//void BigTheater::addToLethalSubjects(Actor *a_)
+//{
+//    lethalSubjects.push_back(a_);
+//    Emoji = "( ͠° ͟ʖ ͡°)";
+//}
 
-void BigTheater::deleteFromLethalSubjects(Actor *a_)
-{
-    lethalSubjects.removeOne(a_);
-}
+//void BigTheater::deleteFromLethalSubjects(Actor *a_)
+//{
+//    lethalSubjects.removeOne(a_);
+//}

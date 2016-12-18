@@ -20,18 +20,19 @@ class BigTheater : public QGraphicsView
     Q_OBJECT
 
     bool startGame;
+    bool stopGame;
     uint lives_D;
     uint score;
 //    qreal x,y,w,h;
+
+
 
     Digger *hero;
     QString D_Style;
     QLabel *display;
     QString Emoji;
 
-    QList<Money*> cash;
-    QList<Money*> bags;
-    QList<Actor*> lethalSubjects;
+    QList<Money*> money;
     QList<Actor*> characters;
 
     void checkingCollision(Actor *Act_);
@@ -40,7 +41,6 @@ class BigTheater : public QGraphicsView
 public:
 
     QGraphicsScene *scene;
-    Money *money;
     Scenery scenery[blockOnMapY][blockOnMapX];
 
     explicit BigTheater();
@@ -50,6 +50,8 @@ public:
     void keyReleaseEvent(QKeyEvent* e);
 
     void stopAction();
+    void stopAllAction();
+    void beginAllAction();
 
     void addToCash(Money *m_);
     void addToLethalSubjects(Actor *a_);

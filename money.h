@@ -11,13 +11,24 @@ class Money : public Actor
 
     int moving;
     int wiggle;
+    int wiggle_F;
+    int compression;
+
+    enum Status{Passive = 0, Moving = 1, Cash = 2};
+    Status status;
+
+    void checkAfterMove();
 
 public:
     Money(int pos_x, int pos_y, BigTheater* Bt);
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual void moveOnBlock(const Course c_);
+
+    inline Status getStat() const {return status;}
 private slots:
     void nextFrame();
     void checkingLowerBlock();
+    void frame();
 };
 
 #endif // MONEY_H

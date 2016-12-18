@@ -20,10 +20,7 @@ Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digg
     currentFrame = 0;
     currentAct = 0;
 
-    timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
-    timer -> start(50);
     qDebug() << "I'am Digger";
 }
 
@@ -49,22 +46,22 @@ void Digger::keyPressEvent(QKeyEvent *k)
     case R_Key_W:
     case Qt::Key_W:
     case Qt::Key_Up:
-        move_U = true;
+        startMove = Up;
         break;
     case R_Key_S:
     case Qt::Key_S:
     case Qt::Key_Down:
-        move_D = true;
+        startMove = Down;
         break;
     case R_Key_A:
     case Qt::Key_A:
     case Qt::Key_Left:
-        move_L = true;
+        startMove = Left;
         break;
     case R_Key_D:
     case Qt::Key_D:
     case Qt::Key_Right:
-        move_R = true;
+        startMove = Right;
         break;
     default:
         qDebug() << k -> key();
@@ -74,31 +71,36 @@ void Digger::keyPressEvent(QKeyEvent *k)
 
 void Digger::keyReleaseEvent(QKeyEvent *k)
 {
-    switch (k -> key()){
+//    switch (k -> key()){
 
-    case R_Key_W:
-    case Qt::Key_W:
-    case Qt::Key_Up:
-        move_U = false;
-        break;
-    case R_Key_S:
-    case Qt::Key_S:
-    case Qt::Key_Down:
-        move_D = false;
-        break;
-    case R_Key_A:
-    case Qt::Key_A:
-    case Qt::Key_Left:
-        move_L = false;
-        break;
-    case R_Key_D:
-    case Qt::Key_D:
-    case Qt::Key_Right:
-        move_R = false;
-        break;
-    default:
-        break;
-    }
+//    switch (k -> key()){
+
+//    case R_Key_W:
+//    case Qt::Key_W:
+//    case Qt::Key_Up:
+//        stopHere(Up);
+//        break;
+//    case R_Key_S:
+//    case Qt::Key_S:
+//    case Qt::Key_Down:
+//        stopHere(Down);
+//        break;
+//    case R_Key_A:
+//    case Qt::Key_A:
+//    case Qt::Key_Left:
+//        stopHere(Left);
+//        break;
+//    case R_Key_D:
+//    case Qt::Key_D:
+//    case Qt::Key_Right:
+//        stopHere(Right);
+//        break;
+//    default:
+//        qDebug() << k -> key();
+//        break;
+//    }
+
+    startMove = None;
 }
 
 void Digger::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

@@ -19,11 +19,7 @@ class Actor : public QObject, public GraphicPixmapObject
     Q_OBJECT
 protected:
     //moving
-    bool move_D;
-    bool move_U;
-    bool move_L;
-    bool move_R;
-
+    Course startMove;
     Course stopMove;
 
     //animation
@@ -48,12 +44,11 @@ protected:
 
     void whereIAm();//WhatIsBlock
     void move(qreal dx_, qreal dy_, Course c);
+    virtual void checkAfterMove();
 
 public:
     Actor(int pos_x, int pos_y, QString imageName, BigTheater* Bt);
     ~Actor();
-
-    void moveOnBlock(const Course c_);
 
     inline int getBlock_X() const {return Block_X;}
     inline int getBlock_Y() const {return Block_Y;}
@@ -62,8 +57,9 @@ public:
     inline QPoint getF_C() const {return QPoint(f_CX, f_CY);}
     inline Course getCourse() const {return course;}
 
-    virtual void stopHere(Course c_);
-    virtual void die(){this->deleteLater();}
+    virtual void moveOnBlock(const Course c_);
+    virtual void stopHere(const Course c_);
+    virtual void die(){qDebug() << "Actor is dies"; /*this->deleteLater();*/}
     virtual void stopTimer();
     virtual void beginTimer();
 protected slots:
