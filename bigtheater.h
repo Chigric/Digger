@@ -24,12 +24,15 @@ class BigTheater : public QGraphicsView
     bool stopGame;
     uint lives_D;
     uint score;
+    uint numbersNowEnem;
+    uint numbersAllEnem;
+    uint addingEnem;
 //    qreal x,y,w,h;
 
 
 
     Digger *hero;
-    Nobbin *enemy;
+    Nobbin **enemy;
     QString D_Style;
     QLabel *display;
     QString Emoji;
@@ -58,10 +61,11 @@ public:
     void deleteFromCharacters(Actor* a_);
 signals:
 
-public slots:
+private slots:
     void frame();
     void startLevel();
     void clearLevel();
+    void addEnemy();
 };
 
 #endif // BIGTHEATER_H

@@ -87,6 +87,11 @@ BigTheater::BigTheater() : QGraphicsView ()
 
     score = 0;
     lives_D = 3;
+    numbersAllEnem = 6;
+    numbersNowEnem = 3;
+    enemy = new Nobbin*[numbersAllEnem];
+
+
 
     timer = new QTimer();
     timer -> start(25);
@@ -115,21 +120,39 @@ void BigTheater::startLevel()
         scene -> addItem(hero);
         characters.push_back(hero);
 
-        enemy = new Nobbin(15, 1, this);
-        scene -> addItem(enemy);
-        characters.push_back(enemy);
+        addingEnem = 0;
 
         startGame = true;
         stopGame = false;
 
         timer -> setInterval(25);
         connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+        timer->singleShot(0, this, SLOT(addEnemy()));
     }
     else {Emoji = "Game_Over"; stopGame = true; timer->singleShot(0, this, SLOT(frame()));}
 }
 
+void BigTheater::addEnemy()
+{
+    enemy[addingEnem] = new Nobbin(15, 1, this);
+    scene -> addItem(enemy[addingEnem]);
+    characters.push_back(enemy[addingEnem]);
+    ++addingEnem;
+    --numbersAllEnem;
+    if (addingEnem != numbersNowEnem && numbersNowEnem != numbersAllEnem){
+        timer->singleShot(2500, this, SLOT(addEnemy()));
+    }
+}
+
 void BigTheater::clearLevel()
 {
+    for (auto i : money)
+    {
+        if (i->getStat() == 2){
+            scene -> removeItem(i);
+            money.removeOne(i);
+        }
+    }
     for (auto i : characters)
     {
         scene -> removeItem(i);
@@ -296,4 +319,8 @@ void BigTheater::deleteFromCharacters(Actor *a_)
 {
     scene -> removeItem(a_);
     characters.removeOne(a_);
+    if (dynamic_cast<Nobbin*> (a_)){
+        ++numbersNowEnem;
+        timer->singleShot(500, this, SLOT(addEnemy()));
+    }
 }
