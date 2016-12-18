@@ -55,11 +55,15 @@ BigTheater::BigTheater() : QGraphicsView ()
                 qDebug() << "1";
                 scenery[i][j].setBox(true);
                 break;
-            case '$':
+            case '$':{
                 qDebug() << "$";
                 //+ Monye(is'n cash)
                 scenery[i][j].setBox(true);
+                auto m_ = new Money(j, i, this);
+                money.push_back(m_);
+                scene->addItem(m_);
                 break;
+            }
             case '*':
                 qDebug() << "*";
                 //+ Imerald
@@ -68,6 +72,7 @@ BigTheater::BigTheater() : QGraphicsView ()
                 break;
             default:
                 qDebug() << '.';
+
                 break;
             }
             if (i)
@@ -116,10 +121,6 @@ void BigTheater::startLevel()
 //        enemies[i]->setSpeed(enemySpeed);
 //    }
 
-    auto m = new Money(10, 1, this);
-    money.push_back(m);
-    scene->addItem(m);
-
 //    money.push_back((new Money(10, 1, this)));
 //    scene -> addItem(*money.end());
 
@@ -134,7 +135,7 @@ void BigTheater::startLevel()
     characters.push_back(hero);
 
     startGame = true;
-    stopGame - false;
+    stopGame = false;
 
     timer -> setInterval(25);
     connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
@@ -142,14 +143,6 @@ void BigTheater::startLevel()
 
 void BigTheater::clearLevel()
 {
-    for (auto i : money)
-    {
-        scene -> removeItem(i);
-//        i->deleteLater();
-//        i = nullptr;
-    }
-    money.clear();
-
     for (auto i : characters)
     {
         scene -> removeItem(i);

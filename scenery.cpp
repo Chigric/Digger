@@ -93,6 +93,9 @@ void Scenery::eatingBlock(const QPoint Act_, const QPoint C_Act, const Course c_
 
             if (Act_.x()/sizeOfBlockX != C_Act.x()/sizeOfBlockX)
                     BT->scenery[Block_Y][Block_X+1].setVLine(false);
+            break;
+        default:
+            break;
         }
 
         if (imerald)

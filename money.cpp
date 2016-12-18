@@ -23,6 +23,8 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
     sizeOfItemX = 36;//52;
     sizeOfItemY = 30;//45;
 
+    setZValue(1.0);
+
     course = Right;
     status = Passive;
     connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
@@ -32,8 +34,6 @@ void Money::checkingLowerBlock()
 {
 //    stopHere(Down);
 
-    qDebug() << flyingBlocks;
-
     if (flyingBlocks == 1) { sizeOfItemX += compression; flyingBlocks = 0; status = Passive;}
     else if (flyingBlocks > 1)
     {
@@ -42,7 +42,6 @@ void Money::checkingLowerBlock()
         status = Cash;
         disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
         timer -> singleShot(12000, this, SLOT(deleteLater()));
-        qDebug() << status;
     }
 
     if ( !BT->scenery[Block_Y+1][Block_X].isBoxFull() ){
@@ -71,7 +70,7 @@ void Money::moveOnBlock(const Course c_)
 
 void Money::frame()
 {
-    if (startMove == Down && flyingBlocks) BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
+    if (flyingBlocks) BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
     Actor::frame();
 }
 
@@ -88,16 +87,13 @@ void Money::checkAfterMove()
 //        break;
 //    }
 
-    qDebug() << "check";
     if ( BT->scenery[Block_Y+1][Block_X].isBoxFull() )
     {
-        qDebug() << "check YES" << Block_Y+1 << Block_X;
         connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
         moveOnBlock(None);
     }
     else
     {
-        qDebug() << "check NO" << Block_Y+1 << Block_X;
         if (course == Down) ++flyingBlocks;
         else moveOnBlock(Down);
     }

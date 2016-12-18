@@ -25,7 +25,7 @@ protected:
     //animation
     int currentFrame;
     int currentAct;
-    int msec;
+    int msec;    
 
     //determining
     Course course;

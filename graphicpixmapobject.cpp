@@ -8,6 +8,8 @@ GraphicPixmapObject::GraphicPixmapObject(int pos_x, int pos_y, QString spriteNam
 
     QString str = ":";
     sprite = new QPixmap(str += spriteName, "png", Qt::PreferDither);
+
+    setZValue(0.0);
 }
 
 void GraphicPixmapObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
