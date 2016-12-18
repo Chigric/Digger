@@ -57,6 +57,7 @@ public:
     inline QPoint getF_C() const {return QPoint(f_CX, f_CY);}
     inline Course getCourse() const {return course;}
 
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual void moveOnBlock(const Course c_);
     virtual void stopHere(const Course c_);
     virtual void die(){qDebug() << "Actor is dies"; /*this->deleteLater();*/}

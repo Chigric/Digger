@@ -114,10 +114,13 @@ void Scenery::setBox(bool b)
 {
     if (b){
         box->setVisible(true);
+        box->setEmpty(false);
         box->setFull(true);
     }
     else{
         box->hide();
+        box->setEmpty(true);
+        box->setFull(false);
     }
 }
 
@@ -153,11 +156,14 @@ void Scenery::setImerald(bool i)
 
 Pixel::Pixel(int pos_x, int pos_y) : GraphicPixmapObject(pos_x, pos_y, "Terra1.png") , start_X(0), start_Y(0), end_X(numberOfPixelsX), end_Y(numberOfPixelsY)
 {
+    full = false;
+    empty = true;
     Block_X = pos_x;
     Block_Y = pos_y;
 }
 
-void Pixel::setFull(bool f_) {full = f_;}
+void Pixel::setEmpty(const bool e_) {empty = e_;}
+void Pixel::setFull(const bool f_) {full = f_;}
 void Pixel::grow_SX() { if (start_X != numberOfPixelsX || end_X) {++start_X; --end_X;}}
 void Pixel::grow_SY() { if (start_Y != numberOfPixelsY || end_Y) {++start_Y; --end_Y;}}
 void Pixel::fall_EX() { if (end_X) --end_X;}

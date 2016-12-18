@@ -13,6 +13,7 @@
 #include "digger.h"
 #include "scenery.h"
 #include "money.h"
+#include "nobbin.h"
 
 
 class BigTheater : public QGraphicsView
@@ -28,6 +29,7 @@ class BigTheater : public QGraphicsView
 
 
     Digger *hero;
+    Nobbin *enemy;
     QString D_Style;
     QLabel *display;
     QString Emoji;

@@ -50,9 +50,6 @@ void Actor::move(qreal dx_, qreal dy_, Course c)
             OwnY -= speedY;
     }
     whereIAm();
-
-//    QList<QGraphicsItem*> cItems = collidingItems();
-//    qDebug() << cItems.size();
 }
 
 void Actor::whereIAm()
@@ -86,9 +83,16 @@ void Actor::whereIAm()
     }
 }
 
+void Actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->drawPixmap(OwnX-sizeOfItemX/2, OwnY-sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, currentAct, sizeOfPictureX, sizeOfPictureY);
+
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+}
+
 void Actor::stopHere(Course c_)
 {
-    qDebug() << "stopHere()" << c_;
     stopMove = c_;
 }
 
@@ -103,25 +107,21 @@ void Actor::frame()
         switch (startMove) {
         case Up:
             if ( (OwnY != (sizeOfBlockY/2) + sizeOfBlockY) && stopMove != Up) {
-                qDebug() << "move_U";
                 move(0, -speedY, Up);
             }
             break;
         case Down:
             if ( (OwnY != (sizeOfBlockY*(blockOnMapY-1) - sizeOfBlockY/2)) && stopMove != Down){
-                qDebug() << "move_D";
                 move(0, speedY, Down);
             }
             break;
         case Left:
             if ( (OwnX != (sizeOfBlockX/2) + sizeOfBlockX) && stopMove != Left){
-                qDebug() << "move_L";
                 move(-speedX, 0, Left);
             }
             break;
         case Right:
             if ( (OwnX != (sizeOfBlockX*(blockOnMapX-1) - sizeOfBlockX/2)) && stopMove != Right){
-                qDebug() << "move_R";
                 move(speedX, 0, Right);
             }
             break;

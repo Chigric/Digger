@@ -9,7 +9,6 @@ class Money : public Actor
 
     int flyingBlocks;
 
-    int moving;
     int wiggle;
     int wiggle_F;
     int compression;
@@ -21,7 +20,6 @@ class Money : public Actor
 
 public:
     Money(int pos_x, int pos_y, BigTheater* Bt);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual void moveOnBlock(const Course c_);
 
     inline Status getStat() const {return status;}

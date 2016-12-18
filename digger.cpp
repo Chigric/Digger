@@ -4,9 +4,8 @@
 
 Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digger.png", Bt)
 {
-    //paramof_block*#block + center_of_block
-    speedX = ((double)sizeOfBlockX/5);//10 pressure for move on 1 block
-    speedY = ((double)sizeOfBlockY/5);//11 pressure for move on 1 block
+    speedX = ((double)sizeOfBlockX/5);//5 pressure for move on 1 block
+    speedY = ((double)sizeOfBlockY/5);//5 pressure for move on 1 block
 
     sizeOfPictureX =  17;
     sizeOfPictureY  = 12;
@@ -71,8 +70,6 @@ void Digger::keyPressEvent(QKeyEvent *k)
 
 void Digger::keyReleaseEvent(QKeyEvent *k)
 {
-//    switch (k -> key()){
-
 //    switch (k -> key()){
 
 //    case R_Key_W:

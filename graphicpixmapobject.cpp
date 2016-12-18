@@ -3,6 +3,7 @@
 
 GraphicPixmapObject::GraphicPixmapObject(int pos_x, int pos_y, QString spriteName) : QGraphicsPixmapItem()
 {
+    //paramof_block*#block + center_of_block
     OwnX = pos_x*sizeOfBlockX + sizeOfBlockX/2;
     OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
 

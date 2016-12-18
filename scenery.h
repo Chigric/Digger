@@ -13,17 +13,20 @@ class BigTheater;
 class Pixel : public GraphicPixmapObject
 {
     bool full;
+    bool empty;
     int start_X, start_Y;
     int end_X, end_Y;
     int Block_X, Block_Y;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
     inline bool IsFull() const {return full;}
+    inline bool IsEmpty() const {return empty;}
     inline int SX() const {return start_X;}
     inline int SY() const {return start_Y;}
     inline int EX() const {return end_X;}
     inline int EY() const {return end_Y;}
-    void setFull(bool f_);
+    void setEmpty(const bool e_);
+    void setFull(const bool f_);
     void grow_SX();
     void grow_SY();
     void fall_EX();
@@ -62,9 +65,9 @@ public:
     void setHLine(bool h);
     void setImerald(bool i);
     inline bool isBoxFull() const {return box->IsFull();}
-    inline bool existBox() const { if (box) return true; else return false;}
-    inline bool existHLine() const { if (hLine) return true; else return false;}
-    inline bool existVLine() const { if (vLine) return true; else return false;}
+    inline bool isBoxEmpty() const { return box->IsEmpty();}
+    inline bool existHLine() const { return hLine->isVisible();}
+    inline bool existVLine() const { return vLine->isVisible();}
     inline QPoint getPos() const
     {
         return QPoint(X, Y);

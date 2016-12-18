@@ -14,7 +14,8 @@ SOURCES += \
     digger.cpp \
     imerald.cpp \
     money.cpp \
-    graphicpixmapobject.cpp
+    graphicpixmapobject.cpp \
+    nobbin.cpp
 
 HEADERS += \
     bigtheater.h \
@@ -24,7 +25,8 @@ HEADERS += \
     define.h \
     imerald.h \
     money.h \
-    graphicpixmapobject.h
+    graphicpixmapobject.h \
+    nobbin.h
 
 RESOURCES += \
     clothing.qrc
