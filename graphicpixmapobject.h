@@ -23,7 +23,7 @@ protected:
 public:
     GraphicPixmapObject(int pos_x, int pos_y, QString spriteName);
 
-    //If true on Boreders els on center
+    //If true on Boreders else on center
     bool itIsCollision(const QPoint& other, bool onBorders);
 
     inline qreal x() const {return OwnX;}

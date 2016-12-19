@@ -24,10 +24,13 @@ class BigTheater : public QGraphicsView
     bool stopGame;
     uint lives_D;
     uint score;
-    uint numbersNowEnem;
-    uint numbersAllEnem;
-    uint addingEnem;
-//    qreal x,y,w,h;
+
+    //
+    int numbersNowEnem;
+    int numbersAllEnem;
+    int addingEnem;
+
+    int msec;
 
 
 

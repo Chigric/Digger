@@ -22,8 +22,9 @@ Nobbin::Nobbin(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Nobb
     currentFrame = 0;
     currentAct = 0;
 
+    msec = 70;
     connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
-    timer -> setInterval(70);
+    timer -> setInterval(msec);
     qDebug() << "I'am Nobbin";
     checkAfterMove();
 }

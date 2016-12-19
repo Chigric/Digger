@@ -12,7 +12,8 @@ enum Course{Left = -2, Up = -1, None = 0, Down = 1, Right = 2};
 #define blockOnMapY 12//10+2
 
 #define costOfEmerald 50
-#define costOfCash 250
+#define costOfCash 500
+#define costOfNobbin 250
 
 #define R_Key_W 1062
 #define R_Key_S 1067
