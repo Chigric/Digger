@@ -9,3 +9,5 @@ Imerald::Imerald(int pos_x, int pos_y) : GraphicPixmapObject(pos_x, pos_y, "Imer
     sizeOfItemY = sizeOfPictureY * 4;
     sprite->setMask(sprite->createHeuristicMask());
 }
+
+int Imerald::quantity = 0;

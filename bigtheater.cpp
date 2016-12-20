@@ -87,9 +87,9 @@ BigTheater::BigTheater() : QGraphicsView ()
 
     score = 0;
     lives_D = 3;
+
     numbersAllEnem = 6;
     numbersNowEnem = 3;
-    enemy = new Nobbin*[numbersAllEnem];
 
 
 
@@ -136,9 +136,9 @@ void BigTheater::startLevel()
 void BigTheater::addEnemy()
 {
     if ((addingEnem != numbersNowEnem) && numbersAllEnem){
-        enemy[addingEnem] = new Nobbin(15, 1, this);
-        scene -> addItem(enemy[addingEnem]);
-        characters.push_back(enemy[addingEnem]);
+        auto N_= new Nobbin(15, 1, this);
+        scene -> addItem(N_);
+        characters.push_back(N_);
         ++addingEnem;
         --numbersAllEnem;
         timer->singleShot(2500, this, SLOT(addEnemy()));
@@ -192,13 +192,18 @@ void BigTheater::stopAllAction()
         i -> stopTimer();
 }
 
+void BigTheater::setEmoji(QString e_)
+{
+    Emoji = e_;
+}
+
 void BigTheater::beginAllAction()
 {
     connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
     stopGame = false;
 
-    Emoji = "( ͡° ͜ʖ ͡°)";
-    if (lives_D == 1) Emoji = "( ≖ ͜ʖ ≖)";
+    setEmoji("( ͡° ͜ʖ ͡°)");
+    if (lives_D == 1) setEmoji("( ≖ ͜ʖ ≖)");
 
     for (auto ch_ : characters)
         ch_ -> beginTimer();
@@ -210,6 +215,11 @@ void BigTheater::stopAction()
 {
     disconnect(timer, SIGNAL(timeout()), this, SLOT(frame()));
     startGame = false;
+
+    setEmoji("( ͡ᵔ ͜ʖ ͡ᵔ)");
+
+    //For correct adding
+    numbersAllEnem += addingEnem;
 
     for (auto ch_ : characters)
         if (!dynamic_cast<Digger*>(ch_))
@@ -228,7 +238,6 @@ void BigTheater::checkingCollision(Actor* Act_)
             hero -> die();
             --lives_D;
             stopAction();
-            Emoji = "( ͡ᵔ ͜ʖ ͡ᵔ)";
         }
     }
     for (auto i : money)
@@ -269,7 +278,6 @@ void BigTheater::checkingCollision(Actor* Act_)
                 if(dynamic_cast<Digger*>(Act_)){
                     --lives_D;
                     stopAction();
-                    Emoji = "( ͡ᵔ ͜ʖ ͡ᵔ)";
                 }
             }
             break;
@@ -279,7 +287,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                 scene -> removeItem(i);
                 money.removeOne(i);
                 if (dynamic_cast<Nobbin*>(Act_))
-                    Emoji = "[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]";
+                    setEmoji("[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]");
                 else growPoints(costOfCash);
             }
             break;
@@ -300,7 +308,7 @@ void BigTheater::keyPressEvent(QKeyEvent* e)
             QApplication::quit();
             break;
         case Qt::Key_Space:
-            Emoji = "(∪｡∪)｡｡｡zzZ";
+            setEmoji("(∪｡∪)｡｡｡zzZ");
             stopAllAction();
         default:
             if (startGame)
@@ -335,9 +343,9 @@ void BigTheater::deleteFromCharacters(Actor *a_)
         if(numbersAllEnem != 0){
             timer->singleShot(500, this, SLOT(addEnemy()));
             growPoints(costOfNobbin);
-            Emoji = "(•ิ_•ิ)?";
+            setEmoji("(•ิ-•ิ)?");
         } else {
-            Emoji = "╮(︶▽︶)╭";
+            setEmoji("(╬ Ò﹏Ó) Win");
             stopAllAction();
         }
     }

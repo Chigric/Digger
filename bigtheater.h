@@ -22,10 +22,11 @@ class BigTheater : public QGraphicsView
 
     bool startGame;
     bool stopGame;
-    uint lives_D;
+
+    int lives_D;
     uint score;
 
-    //
+    //enemy
     int numbersNowEnem;
     int numbersAllEnem;
     int addingEnem;
@@ -60,6 +61,7 @@ public:
     void stopAction();
     void stopAllAction();
     void beginAllAction();
+    void setEmoji(QString e_);
 
     void deleteFromCharacters(Actor* a_);
 signals:

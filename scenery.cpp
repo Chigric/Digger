@@ -148,9 +148,14 @@ void Scenery::setImerald(bool i)
 {
     if (i){
         imerald->setVisible(true);
+        imerald->growQuantity();
     } else {
         imerald->hide();
         BT->growPoints(costOfEmerald);
+        if( !(imerald -> getQuantity()) ){
+            BT->setEmoji("╮(︶▽︶)╭ Win");
+            BT->stopAllAction();
+        }
     }
 }
 
