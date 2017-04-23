@@ -7,9 +7,6 @@
 
 #include <QDebug>
 
-#include <cmath>
-#include <iostream>
-
 #include "graphicpixmapobject.h"
 
 
@@ -18,24 +15,21 @@ class Actor : public QObject, public GraphicPixmapObject
 {
     Q_OBJECT
 protected:
-    //moving
+    //Moving
     Course startMove;
     Course stopMove;
-
-    //animation
+    //Animation
     int currentFrame;
     int currentAct;
-    int msec;    
-
-    //determining
+    int msec;
+    //Determining
     Course course;
     int Block_X;
     int Block_Y;
     qreal speedX;
     qreal speedY;
     qreal dx,dy;
-
-    //front_Coord
+    //Front_Coord
     qreal f_CX;
     qreal f_CY;
 
@@ -47,8 +41,10 @@ protected:
     virtual void checkAfterMove();
 
 public:
-    Actor(int pos_x, int pos_y, QString imageName, BigTheater* Bt);
+    Actor(int pos_x, int pos_y, QString imageName,
+          BigTheater* Bt);
     ~Actor();
+    friend class BigTheater;
 
     inline int getBlock_X() const {return Block_X;}
     inline int getBlock_Y() const {return Block_Y;}
@@ -57,10 +53,13 @@ public:
     inline QPoint getF_C() const {return QPoint(f_CX, f_CY);}
     inline Course getCourse() const {return course;}
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual void paint(QPainter *painter,
+                       const QStyleOptionGraphicsItem *option,
+                       QWidget *widget);
     virtual void moveOnBlock(const Course c_);
     virtual void stopHere(const Course c_);
-    virtual void die(){qDebug() << "Actor is dies"; /*this->deleteLater();*/}
+    virtual void die(){qDebug() << "Actor is dies";
+                       /*this->deleteLater();*/}
     virtual void stopTimer();
     virtual void beginTimer();
 protected slots:

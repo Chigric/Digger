@@ -1,12 +1,13 @@
 #include "nobbin.h"
 #include "bigtheater.h"
 
-Nobbin::Nobbin(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Nobbin.png", Bt)
+Nobbin::Nobbin(int pos_x, int pos_y, BigTheater* Bt) :
+    Actor(pos_x, pos_y, "Nobbin.png", Bt)
 {
     OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
-
-    speedX = ((double)sizeOfBlockX/5);//10 pressure for move on 1 block
-    speedY = ((double)sizeOfBlockY/5);//10 pressure for move on 1 block
+    //5 pressure for move on 1 block
+    speedX = ((double)sizeOfBlockX/5);
+    speedY = ((double)sizeOfBlockY/5);
 
     currentAct = 0;
     currentFrame = 0;
@@ -23,7 +24,8 @@ Nobbin::Nobbin(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Nobb
     currentAct = 0;
 
     msec = 70;
-    connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+    connect(timer, SIGNAL(timeout()),
+            this, SLOT(nextFrame()));
     timer -> setInterval(msec);
     qDebug() << "I'am Nobbin";
     checkAfterMove();
@@ -45,23 +47,29 @@ void Nobbin::checkAfterMove()
     srand(time(NULL));
     Course variant[3];
     int n = 0;
-    if (BT->scenery[Block_Y-1][Block_X].isBoxEmpty() && !BT->scenery[Block_Y][Block_X].existHLine()  &&
+    if (BT->scenery[Block_Y-1][Block_X].isBoxEmpty() &&
+            !BT->scenery[Block_Y][Block_X].existHLine() &&
             course != Down){
         qDebug() << n;
         variant[n++] = Up;
     }
-//    qDebug() << BT->scenery[Block_Y][Block_X-1].isBoxEmpty() << !BT->scenery[Block_Y][Block_X].existVLine() << course;
-    if (BT->scenery[Block_Y][Block_X-1].isBoxEmpty() && !BT->scenery[Block_Y][Block_X].existVLine()  &&
+    qDebug() << BT->scenery[Block_Y][Block_X-1].isBoxEmpty()
+            << !BT->scenery[Block_Y][Block_X].existVLine()
+            << course;
+    if (BT->scenery[Block_Y][Block_X-1].isBoxEmpty() &&
+            !BT->scenery[Block_Y][Block_X].existVLine() &&
             course != Right){
         qDebug() << n;
         variant[n++] = Left;
     }
-    if (BT->scenery[Block_Y+1][Block_X].isBoxEmpty() && !BT->scenery[Block_Y+1][Block_X].existHLine()  &&
+    if (BT->scenery[Block_Y+1][Block_X].isBoxEmpty() &&
+            !BT->scenery[Block_Y+1][Block_X].existHLine() &&
             course != Up){
         qDebug() << n;
         variant[n++] = Down;
     }
-    if (BT->scenery[Block_Y][Block_X+1].isBoxEmpty() && !BT->scenery[Block_Y][Block_X+1].existVLine()  &&
+    if (BT->scenery[Block_Y][Block_X+1].isBoxEmpty() &&
+            !BT->scenery[Block_Y][Block_X+1].existVLine() &&
             course != Left){
         qDebug() << n;
         variant[n++] = Right;

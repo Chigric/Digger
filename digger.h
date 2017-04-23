@@ -9,12 +9,16 @@ class Digger : public Actor
 public:
     Digger(int pos_x, int pos_y, BigTheater* Bt);
     ~Digger();
-    void keyPressEvent(QKeyEvent* k);
-    void keyReleaseEvent(QKeyEvent *k);
 
     void die();
+    //Keyboard
+    void keyPressEvent(QKeyEvent* e);
+    void keyReleaseEvent(QKeyEvent* e);
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual void paint(
+            QPainter *painter,
+            const QStyleOptionGraphicsItem *option,
+            QWidget *widget);
 private slots:
     void nextFrame();
 };

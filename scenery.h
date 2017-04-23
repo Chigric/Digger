@@ -17,21 +17,23 @@ class Pixel : public GraphicPixmapObject
     int start_X, start_Y;
     int end_X, end_Y;
     int Block_X, Block_Y;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option,
+               QWidget *widget);
 public:
+    Pixel(int pos_x, int pos_y);
     inline bool IsFull() const {return full;}
     inline bool IsEmpty() const {return empty;}
     inline int SX() const {return start_X;}
     inline int SY() const {return start_Y;}
     inline int EX() const {return end_X;}
     inline int EY() const {return end_Y;}
-    void setEmpty(const bool e_);
-    void setFull(const bool f_);
+    inline void setEmpty(const bool empty);
+    inline void setFull(const bool full);
     void grow_SX();
     void grow_SY();
     void fall_EX();
     void fall_EY();
-    Pixel(int pos_x, int pos_y);
 };
 
 class Border : public QGraphicsLineItem
@@ -56,22 +58,19 @@ class Scenery : public QGraphicsItemGroup
 public:
     Scenery();
     Scenery(int pos_x, int pos_y, BigTheater *Bt);
-
-    void eatingBlock(const QPoint Act_, const QPoint C_Act, const Course c_);
-
+    void eatingBlock(const QPoint Act_,
+                     const QPoint C_Act,
+                     const Course c_);
     void setPos(int pos_x, int pos_y, BigTheater *Bt);
     void setBox(bool b);
     void setVLine(bool v);
     void setHLine(bool h);
     void setImerald(bool i);
     inline bool isBoxFull() const {return box->IsFull();}
-    inline bool isBoxEmpty() const { return box->IsEmpty();}
-    inline bool existHLine() const { return hLine->isVisible();}
-    inline bool existVLine() const { return vLine->isVisible();}
-    inline QPoint getPos() const
-    {
-        return QPoint(X, Y);
-    }
+    inline bool isBoxEmpty() const {return box->IsEmpty();}
+    inline bool existHLine() const {return hLine->isVisible();}
+    inline bool existVLine() const {return vLine->isVisible();}
+    inline QPoint getPos() const {return QPoint(X, Y);}
 };
 
 

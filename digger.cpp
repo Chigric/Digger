@@ -1,36 +1,31 @@
 #include "digger.h"
-#include <QDebug>
 #include "bigtheater.h"
+#include <QDebug>
 
-Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Digger.png", Bt)
+Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) :
+    Actor(pos_x, pos_y, "Digger.png", Bt)
 {
-    speedX = ((double)sizeOfBlockX/5);//5 pressure for move on 1 block
-    speedY = ((double)sizeOfBlockY/5);//5 pressure for move on 1 block
-
+    //5 pressure for move on 1 block
+    speedX = ((double)sizeOfBlockX/4);
+    speedY = ((double)sizeOfBlockY/4);
+    //Size of picture
     sizeOfPictureX =  17;
     sizeOfPictureY  = 12;
     sizeOfItemX  = sizeOfPictureX * 2;
     sizeOfItemY = sizeOfPictureY * 2;
-
+    //Delta movement
     dx = 10;
     dy = 0;
-
+    //Animation
     course = Right;
     currentFrame = 0;
     currentAct = 0;
-
-    connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+    //Z-Value
+    setZValue(2.0);
+    //Connect
+    connect(timer, SIGNAL(timeout()),
+            this, SLOT(nextFrame()));
     qDebug() << "I'am Digger";
-}
-
-void Digger::nextFrame()
-{
-    currentFrame += 17;
-    if (currentFrame >= 102 )
-        currentFrame = 0;
-
-    if(currentAct == 24 && currentFrame == 85)
-        stopTimer();
 }
 
 Digger::~Digger()
@@ -38,10 +33,9 @@ Digger::~Digger()
     qDebug() << "delete Digger";
 }
 
-void Digger::keyPressEvent(QKeyEvent *k)
+void Digger::keyPressEvent(QKeyEvent* e)
 {
-    switch (k -> key()){
-
+    switch (e -> key()) {
     case R_Key_W:
     case Qt::Key_W:
     case Qt::Key_Up:
@@ -63,67 +57,57 @@ void Digger::keyPressEvent(QKeyEvent *k)
         startMove = Right;
         break;
     default:
-        qDebug() << k -> key();
+        qDebug() << e -> key();
         break;
     }
 }
-
-void Digger::keyReleaseEvent(QKeyEvent *k)
+void Digger::keyReleaseEvent(QKeyEvent *e)
 {
-//    switch (k -> key()){
-
-//    case R_Key_W:
-//    case Qt::Key_W:
-//    case Qt::Key_Up:
-//        stopHere(Up);
-//        break;
-//    case R_Key_S:
-//    case Qt::Key_S:
-//    case Qt::Key_Down:
-//        stopHere(Down);
-//        break;
-//    case R_Key_A:
-//    case Qt::Key_A:
-//    case Qt::Key_Left:
-//        stopHere(Left);
-//        break;
-//    case R_Key_D:
-//    case Qt::Key_D:
-//    case Qt::Key_Right:
-//        stopHere(Right);
-//        break;
-//    default:
-//        qDebug() << k -> key();
-//        break;
-//    }
-
     startMove = None;
+    Q_UNUSED(e);
 }
 
-void Digger::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Digger::nextFrame()
+{
+    currentFrame += 17;
+    if (currentFrame >= 102 )
+        currentFrame = 0;
+    if(currentAct == 24 && currentFrame == 85)
+        stopTimer();
+}
+
+
+
+void Digger::paint(
+        QPainter *painter,
+        const QStyleOptionGraphicsItem *option,
+        QWidget *widget )
 {
     painter -> save();
     painter -> translate(OwnX, OwnY);
-    painter -> rotate( atan2(dx, dy) *180/M_PI - 90 );
+    painter -> rotate( atan2(dx, dy)*180/M_PI - 90 );
 
     switch (course) {
-    case Right:
-//        painter -> scale(1,1);
+    case Left:
+        painter -> scale(1,-1);
         break;
     case Up:
         painter -> scale(-1,1);
         break;
-    case Left:
-        painter -> scale(1,-1);
-        break;
     case Down:
         painter -> scale(-1,1);
+        break;
+    case Right:
+//        painter -> scale(1,1);
         break;
     default:
         break;
     }
-    painter -> drawPixmap(-sizeOfItemX/2, -sizeOfItemY/2, sizeOfItemX, sizeOfItemY, *sprite, currentFrame, currentAct, sizeOfPictureX, sizeOfPictureY);
-    painter -> restore();
+    painter->drawPixmap(-sizeOfItemX/2, -sizeOfItemY/2,
+                        sizeOfItemX, sizeOfItemY,
+                        *sprite, currentFrame, currentAct,
+                        sizeOfPictureX, sizeOfPictureY);
+    painter->restore();
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }

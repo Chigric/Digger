@@ -1,12 +1,13 @@
 #include "money.h"
 #include "bigtheater.h"
 
-Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.png", Bt)
+Money::Money(int pos_x, int pos_y, BigTheater* Bt) :
+    Actor(pos_x, pos_y, "Money.png", Bt)
 {
     OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
-
-    speedX = ((double)sizeOfBlockX/5);//10 pressure for move on 1 block
-    speedY = ((double)sizeOfBlockY/5);//10 pressure for move on 1 block
+    //5 pressure for move on 1 block
+    speedX = ((double)sizeOfBlockX/5);
+    speedY = ((double)sizeOfBlockY/3);
 
     flyingBlocks = 0;
 
@@ -26,22 +27,27 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) : Actor(pos_x, pos_y, "Money.
 
     course = Right;
     status = Passive;
-    connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+    connect(timer, SIGNAL(timeout()),
+            this, SLOT(checkingLowerBlock()));
 }
 
 void Money::checkingLowerBlock()
 {
 //    stopHere(Down);
-
-    if (flyingBlocks == 1) { sizeOfItemX += compression; flyingBlocks = 0; status = Passive;}
+    if (flyingBlocks == 1) {
+        sizeOfItemX += compression;
+        flyingBlocks = 0;
+        status = Passive;
+    }
     else if (flyingBlocks > 1)
     {
         sizeOfItemX += compression; currentAct = 20;
         status = Cash;
-        disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
-        timer -> singleShot(12000, this, SLOT(deleteLater()));
+        disconnect(timer, SIGNAL(timeout()),
+                   this, SLOT(checkingLowerBlock()));
+        timer -> singleShot(12000,// 12 second
+                            this, SLOT(deleteLater()));
     }
-
     if ( !BT->scenery[Block_Y+1][Block_X].isBoxFull() ){
         moveOnBlock(Down);
     }
@@ -49,22 +55,24 @@ void Money::checkingLowerBlock()
 
 void Money::moveOnBlock(const Course c_)
 {
-    if (c_ != None) disconnect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
-
-    if (c_ == Down)
-    {
+    if (c_ != None)
+        disconnect(timer, SIGNAL(timeout()),
+                   this, SLOT(checkingLowerBlock()));
+    if (c_ == Down) {
         stopHere(Down);
-        connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+        connect(timer, SIGNAL(timeout()),
+                this, SLOT(nextFrame()));
         currentAct = 10;
         timer -> setInterval(250);
     }
-
     Actor::moveOnBlock(c_);
 }
 
 void Money::frame()
 {
-    if (flyingBlocks) BT->scenery[Block_Y][Block_X].eatingBlock(getF_C(), pos(),course);
+    if (flyingBlocks)
+        BT->scenery[Block_Y][Block_X].
+                eatingBlock(getF_C(), pos(),course);
     Actor::frame();
 }
 
@@ -72,11 +80,11 @@ void Money::checkAfterMove()
 {
     if ( BT->scenery[Block_Y+1][Block_X].isBoxFull() )
     {
-        connect(timer, SIGNAL(timeout()), this, SLOT(checkingLowerBlock()));
+        connect(timer, SIGNAL(timeout()),
+                this, SLOT(checkingLowerBlock()));
         moveOnBlock(None);
     }
-    else
-    {
+    else {
         if (course == Down) ++flyingBlocks;
         else moveOnBlock(Down);
     }
@@ -87,10 +95,12 @@ void Money::nextFrame()
     if (currentAct == 10){
         if (wiggle < wiggle_F){
             currentFrame += sizeOfPictureX;
-            if (currentFrame >= sizeOfPictureX*wiggle_F) currentFrame = 0;
+            if (currentFrame >= sizeOfPictureX*wiggle_F)
+                currentFrame = 0;
             ++wiggle;
         } else {
-            disconnect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+            disconnect(timer, SIGNAL(timeout()),
+                       this, SLOT(nextFrame()));
             wiggle = 0;
             currentAct = 0;
             sizeOfItemX -= compression;
@@ -101,4 +111,9 @@ void Money::nextFrame()
             status = Moving;
         }
     }
+}
+
+Money::~Money()
+{
+    qDebug() << "Delete MMMMMoney!!!!!!!!!!!!!!!!";
 }

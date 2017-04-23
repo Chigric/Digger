@@ -15,61 +15,72 @@
 #include "money.h"
 #include "nobbin.h"
 
+#define MSEC 25
 
 class BigTheater : public QGraphicsView
 {
     Q_OBJECT
-
-    bool startGame;
+    //Flags
+    bool heroLives;
     bool stopGame;
-
+    //Statistic
     int lives_D;
     uint score;
-
-    //enemy
+    uint currentLevel;
+    //Start_Digger
+    uint start_X;
+    uint start_Y;
+    //Number_Of_Keystrokes
+    int NumberOfKeystrokes;
+    //Number_for_Timer
+    int remaining;
+    //Enemy
     int numbersNowEnem;
     int numbersAllEnem;
     int addingEnem;
-
-    int msec;
-
-
-
-    Digger *hero;
-    Nobbin **enemy;
+    //Info
     QString D_Style;
     QLabel *display;
     QString Emoji;
-
+    //Characters
     QList<Money*> money;
     QList<Actor*> characters;
-
-    void checkingCollision(Actor *Act_);
-
+    Digger *hero;
+    //Timers
     QTimer* timer;
+    QTimer* timerForEnem;
+    //Map
+    char plan[blockOnMapY][blockOnMapX+1];
+    //Function ...
+    //OF Level
+    void setStatistic();
+    void loaderOfLevel(uint num);
+    void startLevel(uint X, uint Y);
+    void clearAllLevel();//with money
+    //OF Collision
+    void checkingCollision(Actor *Act_);
 public:
-
-    QGraphicsScene *scene;
-    Scenery scenery[blockOnMapY][blockOnMapX];
-
     explicit BigTheater();
     ~BigTheater();
+    QGraphicsScene *scene;
+    Scenery/****/ scenery[blockOnMapY][blockOnMapX];
+    //Score
     void growPoints(uint p_);
+    //Keyboard
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
-
-    void stopAction();
+    //Action
+    void afterDeath_Hero();
     void stopAllAction();
     void beginAllAction();
-    void setEmoji(QString e_);
-
+    void setEmoji(const QString e_);
+    //Arrays
     void deleteFromCharacters(Actor* a_);
 signals:
 
 private slots:
     void frame();
-    void startLevel();
-    void clearLevel();
+    void clearLevel();//without money, except "Cash"
     void addEnemy();
 };
 
