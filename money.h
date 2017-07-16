@@ -12,7 +12,7 @@ class Money : public Actor
     int wiggle;
     int wiggle_F;
     int compression;
-    enum Status{Passive = 0, Moving = 1, Cash = 2};
+    enum Status{Passive = 0, MovOnHor = 1, Falling = 2, Cash = 3};
     Status status;
 
     void checkAfterMove();

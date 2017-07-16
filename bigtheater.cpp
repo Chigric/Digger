@@ -103,8 +103,8 @@ void BigTheater::loaderOfLevel(uint num)
     timer -> start(MSEC);
     connect(timer, SIGNAL(timeout()),
             scene, SLOT(update(/*QRectF(x,y,w,h)*/)));
-    numbersAllEnem = num+6;//6
-    numbersNowEnem = num+1  ;//3
+    numbersAllEnem = num+0  ;//6
+    numbersNowEnem = num+0  ;//3
     if(!num){
         start_X = 8; start_Y = 10;
     }
@@ -167,7 +167,7 @@ void BigTheater::clearLevel()
 {
     //Without_Money, except "Cash"
     for (auto i : money) {
-        if (i->getStat() == 2) {
+        if (i->getStat() == 3) {
             //if (i == Cash)
             scene -> removeItem(i);
             money.removeOne(i);
@@ -292,6 +292,8 @@ void BigTheater::checkingCollision(Actor* Act_)
         switch (i->getStat()) {
         case 0:
             //just bag
+        case 1:
+            //bag is moving on horiz
             Act_->stopHere(None);
             if (i->itIsCollision(Act_->getF_C(), true)){
                 qDebug() << "Collision";
@@ -306,18 +308,18 @@ void BigTheater::checkingCollision(Actor* Act_)
                     break;
                 case Down:
                     Act_ -> stopHere(Down);
-//                    qDebug() << "from Down";
+                    qDebug() << "from Down";
                     break;
                 case Up:
                     Act_ -> stopHere(Up);
-//                    qDebug() << "from Up";
+                    qDebug() << "from Up";
                     break;
                 default:
                     break;
                 }
             }
             break;
-        case 1:
+        case 2:
             //falling bag
             if ( i->itIsCollision(Act_->pos(), false) ||
                     Act_->itIsCollision(i->pos(), false) )
@@ -329,7 +331,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                 }
             }
             break;
-        case 2:
+        case 3:
             //cash
             if (i->itIsCollision(Act_->getF_C(), true)){
                 scene->removeItem(i);

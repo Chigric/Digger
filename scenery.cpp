@@ -83,8 +83,12 @@ void Scenery::eatingBlock(const QPoint Act_,
                 box->fall_EY();
 
             if(Act_.y()/sizeOfBlockY != C_Act.y()/sizeOfBlockY )
+            {
                         BT->scenery[Block_Y+1][Block_X].
                                 setHLine(false);
+//                        BT->scenery[Block_Y+1][Block_X].
+//                                setBox(false);
+            }
             break;
         case Right:
             if (dx - box->SX()*sizeOfPixelX > 0)
@@ -94,8 +98,12 @@ void Scenery::eatingBlock(const QPoint Act_,
             if (box->EX()*sizeOfPixelX - dx > 0)
                 box->fall_EX();
             if (Act_.x()/sizeOfBlockX != C_Act.x()/sizeOfBlockX)
+            {
                     BT->scenery[Block_Y][Block_X+1].
                             setVLine(false);
+//                    BT->scenery[Block_Y][Block_X+1].
+//                            setBox(false);
+            }
             break;
         default:
             break;

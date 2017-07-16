@@ -6,7 +6,7 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) :
 {
     OwnY = pos_y*sizeOfBlockY + sizeOfBlockY/2;
     //5 pressure for move on 1 block
-    speedX = ((double)sizeOfBlockX/5);
+    speedX = ((double)sizeOfBlockX/4);
     speedY = ((double)sizeOfBlockY/3);
 
     flyingBlocks = 0;
@@ -54,16 +54,21 @@ void Money::checkingLowerBlock()
 }
 
 void Money::moveOnBlock(const Course c_)
+//preparation
 {
     if (c_ != None)
         disconnect(timer, SIGNAL(timeout()),
                    this, SLOT(checkingLowerBlock()));
     if (c_ == Down) {
-        stopHere(Down);
         connect(timer, SIGNAL(timeout()),
                 this, SLOT(nextFrame()));
-        currentAct = 10;
-        timer -> setInterval(250);
+        if (status == Passive){
+            stopHere(Down);
+            currentAct = 10;
+            timer -> setInterval(250);
+        }
+    } else if (c_ == Right || c_ == Left) {
+        status = MovOnHor;
     }
     Actor::moveOnBlock(c_);
 }
@@ -86,7 +91,9 @@ void Money::checkAfterMove()
     }
     else {
         if (course == Down) ++flyingBlocks;
-        else moveOnBlock(Down);
+        else {
+            moveOnBlock(Down);
+        }
     }
 }
 
@@ -98,18 +105,19 @@ void Money::nextFrame()
             if (currentFrame >= sizeOfPictureX*wiggle_F)
                 currentFrame = 0;
             ++wiggle;
-        } else {
-            disconnect(timer, SIGNAL(timeout()),
-                       this, SLOT(nextFrame()));
-            wiggle = 0;
+        } else
             currentAct = 0;
-            sizeOfItemX -= compression;
-            timer -> setInterval(msec);
-            flyingBlocks = 1;
-            BT->scenery[Block_Y][Block_X].setBox(false);
-            stopHere(None);
-            status = Moving;
-        }
+    } else if (currentAct == 0){
+        qDebug() << "current Act = " << currentAct;
+        disconnect(timer, SIGNAL(timeout()),
+                   this, SLOT(nextFrame()));
+        wiggle = 0;
+        sizeOfItemX -= compression;
+        timer -> setInterval(msec);
+        flyingBlocks = 1;
+        BT->scenery[Block_Y][Block_X].setBox(false);
+        stopHere(None);
+        status = Falling;
     }
 }
 

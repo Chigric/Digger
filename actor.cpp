@@ -35,30 +35,16 @@ void Actor::move(qreal dx_, qreal dy_, Course c)
     course = c;
     dx = dx_;
     dy = dy_;
-//    int X = int(OwnX) % sizeOfBlockX;
-//    int Y = int(OwnY) % sizeOfBlockY;
+
     int cen_X = sizeOfBlockX/2;
     int cen_Y = sizeOfBlockY/2;
     int X = fmod(OwnX, sizeOfBlockX);
     int Y = fmod(OwnY, sizeOfBlockY);
-//    int X = (int)ceil(OwnX) % sizeOfBlockX;
-//    int Y = (int)ceil(OwnY) % sizeOfBlockY;
-
-//    for (int k = 0; k < 6; k++) {
-//        int d = fmod((OwnX + dx_*k), sizeOfBlockX);
-//        qDebug() << k << d;
-//    }
-//    qDebug() << "X = " <<
-//                OwnX << ceil(OwnX) << floor(OwnX) <<
-//                X << cen_X << speedX;
-//    qDebug() << "Y = " <<
-//                OwnY << (int)ceil(OwnY) <<
-//                Y << cen_Y << speedY << '\n';
 
     if (X == cen_X && Y == cen_Y){
         OwnX += dx_;
         OwnY += dy_;
-    }
+    } else
     if(dy_){
         if (X == cen_X && Y != cen_Y)
             OwnY += dy_;
@@ -73,7 +59,7 @@ void Actor::move(qreal dx_, qreal dy_, Course c)
             else
                 OwnX -= speedX;
         }
-    }
+    } else
     if (dx_){
         if (Y == cen_Y && X != cen_X)
             OwnX += dx_;
@@ -170,10 +156,6 @@ void Actor::frame()
         default:
             break;
         }
-//        int X = int(OwnX) % sizeOfBlockX;
-//        int Y = int(OwnY) % sizeOfBlockY;
-//        int X = (int)floor(OwnX) % sizeOfBlockX;
-//        int Y = (int)floor(OwnY) % sizeOfBlockY;
         int X = fmod(OwnX, sizeOfBlockX);
         int Y = fmod(OwnY, sizeOfBlockY);
         int cen_X = sizeOfBlockX/2;
