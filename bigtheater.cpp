@@ -319,7 +319,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                 }
             }
             break;
-        case 2:
+        case 3:
             //falling bag
             if ( i->itIsCollision(Act_->pos(), false) ||
                     Act_->itIsCollision(i->pos(), false) )
@@ -331,7 +331,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                 }
             }
             break;
-        case 3:
+        case 4:
             //cash
             if (i->itIsCollision(Act_->getF_C(), true)){
                 scene->removeItem(i);

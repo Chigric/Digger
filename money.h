@@ -12,10 +12,13 @@ class Money : public Actor
     int wiggle;
     int wiggle_F;
     int compression;
-    enum Status{Passive = 0, MovOnHor = 1, Falling = 2, Cash = 3};
+    enum Status{Passive = 0, MovOnHor = 1,
+                Neutral = 2,//Don't touch me
+                Falling = 3, Cash = 4};
     Status status;
 
     void checkAfterMove();
+    inline void setStatus(const Status s_);
 public:
     Money(int pos_x, int pos_y, BigTheater* Bt);
     ~Money();

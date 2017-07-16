@@ -56,9 +56,6 @@ void Money::checkingLowerBlock()
 void Money::moveOnBlock(const Course c_)
 //preparation
 {
-    if (c_ != None)
-        disconnect(timer, SIGNAL(timeout()),
-                   this, SLOT(checkingLowerBlock()));
     if (c_ == Down) {
         connect(timer, SIGNAL(timeout()),
                 this, SLOT(nextFrame()));
@@ -70,6 +67,9 @@ void Money::moveOnBlock(const Course c_)
     } else if (c_ == Right || c_ == Left) {
         status = MovOnHor;
     }
+    if (c_ != None)
+        disconnect(timer, SIGNAL(timeout()),
+                   this, SLOT(checkingLowerBlock()));
     Actor::moveOnBlock(c_);
 }
 
@@ -88,10 +88,18 @@ void Money::checkAfterMove()
         connect(timer, SIGNAL(timeout()),
                 this, SLOT(checkingLowerBlock()));
         moveOnBlock(None);
+        status = Passive;
     }
     else {
-        if (course == Down) ++flyingBlocks;
-        else {
+        if (course == Down) {
+            ++flyingBlocks;
+            qDebug() << '1' << flyingBlocks << "flyingBlocks" <<
+                      " status = " << status;
+            if (status == Neutral)
+                status = Falling;
+            qDebug() << '2' << flyingBlocks << "flyingBlocks" <<
+                      " status = " << status;
+        } else {
             moveOnBlock(Down);
         }
     }
@@ -99,16 +107,7 @@ void Money::checkAfterMove()
 
 void Money::nextFrame()
 {
-    if (currentAct == 10){
-        if (wiggle < wiggle_F){
-            currentFrame += sizeOfPictureX;
-            if (currentFrame >= sizeOfPictureX*wiggle_F)
-                currentFrame = 0;
-            ++wiggle;
-        } else
-            currentAct = 0;
-    } else if (currentAct == 0){
-        qDebug() << "current Act = " << currentAct;
+    if (currentAct == 0){
         disconnect(timer, SIGNAL(timeout()),
                    this, SLOT(nextFrame()));
         wiggle = 0;
@@ -117,9 +116,23 @@ void Money::nextFrame()
         flyingBlocks = 1;
         BT->scenery[Block_Y][Block_X].setBox(false);
         stopHere(None);
-        status = Falling;
+        if (status == MovOnHor)
+            status = Neutral;
+        else
+            status = Falling;
+    } else if (currentAct == 10){
+        if (wiggle < wiggle_F){
+            currentFrame += sizeOfPictureX;
+            if (currentFrame >= sizeOfPictureX*wiggle_F)
+                currentFrame = 0;
+            ++wiggle;
+        } else
+            currentAct = 0;
     }
 }
+
+inline void Money::setStatus(const Status s_)
+{status = s_;}
 
 Money::~Money()
 {
