@@ -272,7 +272,7 @@ void BigTheater::checkingCollision(Actor* Act_)
 {
     if (dynamic_cast<Digger*>(Act_)){
         //eating block by Digger
-        scenery[Act_->getBlock_Y()][Act_->getBlock_X()].
+        scenery[Act_->block_Y()][Act_->block_X()].
                 eatingBlock(
                     Act_->getF_C(),
                     Act_->pos(),

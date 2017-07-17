@@ -6,8 +6,8 @@ Digger::Digger(int pos_x, int pos_y, BigTheater* Bt) :
     Actor(pos_x, pos_y, "Digger.png", Bt)
 {
     //5 pressure for move on 1 block
-    speedX = ((double)sizeOfBlockX/5);
-    speedY = ((double)sizeOfBlockY/5);
+    speedX = (8/*(double)sizeOfBlockX/5*/);
+    speedY = (6.4/*(double)sizeOfBlockY/5*/);
     //Size of picture
     sizeOfPictureX =  17;
     sizeOfPictureY  = 12;

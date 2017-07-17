@@ -46,8 +46,8 @@ public:
     ~Actor();
     friend class BigTheater;
 
-    inline int getBlock_X() const {return Block_X;}
-    inline int getBlock_Y() const {return Block_Y;}
+    inline int block_X() const {return Block_X;}
+    inline int block_Y() const {return Block_Y;}
     inline qreal getF_CX() const {return f_CX;}
     inline qreal getF_CY() const {return f_CY;}
     inline QPoint getF_C() const {return QPoint(f_CX, f_CY);}
@@ -64,7 +64,6 @@ public:
     virtual void beginTimer();
 protected slots:
     virtual void frame();
-    virtual void afterStop();
 };
 
 #endif // ACTOR_H

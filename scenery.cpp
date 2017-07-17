@@ -63,7 +63,7 @@ void Scenery::setPos(int pos_x, int pos_y, BigTheater* Bt)
 }
 
 void Scenery::eatingBlock(const QPoint Act_,
-                          const QPoint C_Act,
+                          const QPoint C_Act,//centre
                           const Course c_)
 {
     int dx = Act_.x() - X;
@@ -77,22 +77,35 @@ void Scenery::eatingBlock(const QPoint Act_,
         case Down:
             if (dy - box->SY()*sizeOfPixelY > 0)
                 box->grow_SY();
+            if(Act_.y()/sizeOfBlockY != C_Act.y()/sizeOfBlockY )
+            {
+                        BT->scenery[Block_Y][Block_X].
+                                setHLine(false);
+                        BT->scenery[Block_Y-1][Block_X].
+                                setBox(false);
+            }
             break;
         case Up:
             if (box->EY()*sizeOfPixelY - dy > 0)
                 box->fall_EY();
-
             if(Act_.y()/sizeOfBlockY != C_Act.y()/sizeOfBlockY )
             {
                         BT->scenery[Block_Y+1][Block_X].
                                 setHLine(false);
-//                        BT->scenery[Block_Y+1][Block_X].
-//                                setBox(false);
+                        BT->scenery[Block_Y+1][Block_X].
+                                setBox(false);
             }
             break;
         case Right:
             if (dx - box->SX()*sizeOfPixelX > 0)
                 box->grow_SX();
+            if (Act_.x()/sizeOfBlockX != C_Act.x()/sizeOfBlockX)
+            {
+                    BT->scenery[Block_Y][Block_X].
+                            setVLine(false);
+                    BT->scenery[Block_Y][Block_X-1].
+                            setBox(false);
+            }
             break;
         case Left:
             if (box->EX()*sizeOfPixelX - dx > 0)
@@ -101,8 +114,8 @@ void Scenery::eatingBlock(const QPoint Act_,
             {
                     BT->scenery[Block_Y][Block_X+1].
                             setVLine(false);
-//                    BT->scenery[Block_Y][Block_X+1].
-//                            setBox(false);
+                    BT->scenery[Block_Y][Block_X+1].
+                            setBox(false);
             }
             break;
         default:
