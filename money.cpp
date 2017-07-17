@@ -93,12 +93,8 @@ void Money::checkAfterMove()
     else {
         if (course == Down) {
             ++flyingBlocks;
-            qDebug() << '1' << flyingBlocks << "flyingBlocks" <<
-                      " status = " << status;
             if (status == Neutral)
                 status = Falling;
-            qDebug() << '2' << flyingBlocks << "flyingBlocks" <<
-                      " status = " << status;
         } else {
             moveOnBlock(Down);
         }

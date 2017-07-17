@@ -137,6 +137,7 @@ void Actor::frame()
             if ((OwnY < (sizeOfBlockY*(blockOnMapY-1) -
                           sizeOfBlockY/2)) &&
                     stopMove != Down){
+                qDebug() << "1 DDDDDD Down" << stopMove;
                 move(0, speedY, Down);
             }
             break;
@@ -172,7 +173,13 @@ void Actor::checkAfterMove() {
 //    qDebug() << "check";
 }
 
+void Actor::afterStop()
+{
+    stopMove = None;
+}
+
 void Actor::stopHere(Course c_) {stopMove = c_;}
+
 void Actor::moveOnBlock(const Course c_){startMove = c_;}
 void Actor::stopTimer() {timer->stop();}
 void Actor::beginTimer() {if (this) timer->start(msec);}

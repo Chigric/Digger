@@ -167,7 +167,7 @@ void BigTheater::clearLevel()
 {
     //Without_Money, except "Cash"
     for (auto i : money) {
-        if (i->getStat() == 3) {
+        if (i->getStat() == 4) {
             //if (i == Cash)
             scene -> removeItem(i);
             money.removeOne(i);
@@ -270,7 +270,7 @@ void BigTheater::afterDeath_Hero()
 
 void BigTheater::checkingCollision(Actor* Act_)
 {
-    if (dynamic_cast<Digger*>(Act_))
+    if (dynamic_cast<Digger*>(Act_)){
         //eating block by Digger
         scenery[Act_->getBlock_Y()][Act_->getBlock_X()].
                 eatingBlock(
@@ -278,6 +278,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                     Act_->pos(),
                     Act_->getCourse()
                     );
+    }
     else{
         if (hero->itIsCollision(Act_->getF_C(), true))
         //collision enemy with Digger
@@ -287,6 +288,7 @@ void BigTheater::checkingCollision(Actor* Act_)
             afterDeath_Hero();
         }
     }
+    Act_ -> stopHere(None);
     for (auto i : money)
     {
         switch (i->getStat()) {
@@ -294,7 +296,7 @@ void BigTheater::checkingCollision(Actor* Act_)
             //just bag
         case 1:
             //bag is moving on horiz
-            Act_->stopHere(None);
+//            Act_->stopHere(None);
             if (i->itIsCollision(Act_->getF_C(), true)){
                 qDebug() << "Collision";
                 switch (Act_ -> getCourse()) {
@@ -315,6 +317,7 @@ void BigTheater::checkingCollision(Actor* Act_)
                     qDebug() << "from Up";
                     break;
                 default:
+                    Act_ -> stopHere(None);
                     break;
                 }
             }

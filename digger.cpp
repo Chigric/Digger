@@ -39,22 +39,22 @@ void Digger::keyPressEvent(QKeyEvent* e)
     case R_Key_W:
     case Qt::Key_W:
     case Qt::Key_Up:
-        startMove = Up;
+        moveOnBlock(Up);
         break;
     case R_Key_S:
     case Qt::Key_S:
     case Qt::Key_Down:
-        startMove = Down;
+        moveOnBlock(Down);
         break;
     case R_Key_A:
     case Qt::Key_A:
     case Qt::Key_Left:
-        startMove = Left;
+        moveOnBlock(Left);
         break;
     case R_Key_D:
     case Qt::Key_D:
     case Qt::Key_Right:
-        startMove = Right;
+        moveOnBlock(Right);
         break;
     default:
         qDebug() << e -> key();
@@ -63,7 +63,7 @@ void Digger::keyPressEvent(QKeyEvent* e)
 }
 void Digger::keyReleaseEvent(QKeyEvent *e)
 {
-    startMove = None;
+    moveOnBlock(None);
     Q_UNUSED(e);
 }
 
@@ -75,8 +75,6 @@ void Digger::nextFrame()
     if(currentAct == 24 && currentFrame == 85)
         stopTimer();
 }
-
-
 
 void Digger::paint(
         QPainter *painter,

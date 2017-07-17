@@ -64,6 +64,7 @@ public:
     virtual void beginTimer();
 protected slots:
     virtual void frame();
+    virtual void afterStop();
 };
 
 #endif // ACTOR_H
