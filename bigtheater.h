@@ -76,6 +76,7 @@ public:
     void setEmoji(const QString e_);
     //Arrays
     void deleteFromCharacters(Actor* a_);
+    void deleteFromMoney(Money* m_);
 signals:
 
 private slots:

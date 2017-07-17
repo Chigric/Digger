@@ -29,6 +29,8 @@ Money::Money(int pos_x, int pos_y, BigTheater* Bt) :
     status = Passive;
     connect(timer, SIGNAL(timeout()),
             this, SLOT(checkingLowerBlock()));
+    timerForDelete = new QTimer;
+    remaining = 0;
 }
 
 void Money::checkingLowerBlock()
@@ -45,8 +47,12 @@ void Money::checkingLowerBlock()
         status = Cash;
         disconnect(timer, SIGNAL(timeout()),
                    this, SLOT(checkingLowerBlock()));
-        timer -> singleShot(12000,// 12 second
-                            this, SLOT(deleteLater()));
+//        timer -> singleShot(3000,// 12 second
+//                            BT, SLOT(deleteFromMoney(this)));
+        remaining = 3000;// 12 second
+        timerForDelete->start(remaining);
+        connect(timerForDelete, SIGNAL(timeout()),
+                   this, SLOT(die()));
     }
     if ( !BT->scenery[Block_Y+1][Block_X].isBoxFull() ){
         moveOnBlock(Down);
@@ -89,6 +95,7 @@ void Money::checkAfterMove()
                 this, SLOT(checkingLowerBlock()));
         moveOnBlock(None);
         status = Passive;
+        BT->scenery[Block_Y][Block_X].setBox(false);
     }
     else {
         if (course == Down) {
@@ -127,8 +134,24 @@ void Money::nextFrame()
     }
 }
 
-inline void Money::setStatus(const Status s_)
-{status = s_;}
+void Money::stopTimer(){
+    if (timerForDelete->isActive()){
+        remaining = timerForDelete->remainingTime();
+        timerForDelete->stop();
+    }
+    Actor::stopTimer();
+}
+
+void Money::beginTimer(){
+    if (remaining)
+        timerForDelete->start(remaining);
+    Actor::beginTimer();
+}
+
+void Money::die()
+{
+    BT -> deleteFromMoney(this);
+}
 
 Money::~Money()
 {

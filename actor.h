@@ -58,10 +58,11 @@ public:
                        QWidget *widget);
     virtual void moveOnBlock(const Course c_);
     virtual void stopHere(const Course c_);
-    virtual void die(){qDebug() << "Actor is dies";
-                       /*this->deleteLater();*/}
     virtual void stopTimer();
     virtual void beginTimer();
+public slots:
+    virtual void die(){qDebug() << "Actor is dies";
+                       /*this->deleteLater();*/}
 protected slots:
     virtual void frame();
 };

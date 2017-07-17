@@ -13,6 +13,7 @@ public:
     ~Nobbin();
 
     virtual void checkAfterMove();
+public slots:
     virtual void die();
 private slots:
     void nextFrame();

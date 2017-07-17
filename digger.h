@@ -10,7 +10,6 @@ public:
     Digger(int pos_x, int pos_y, BigTheater* Bt);
     ~Digger();
 
-    void die();
     //Keyboard
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
@@ -19,6 +18,8 @@ public:
             QPainter *painter,
             const QStyleOptionGraphicsItem *option,
             QWidget *widget);
+public slots:
+    void die();
 private slots:
     void nextFrame();
 };

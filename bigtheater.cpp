@@ -422,3 +422,10 @@ void BigTheater::deleteFromCharacters(Actor *a_)
     }
     a_->deleteLater();
 }
+
+void BigTheater::deleteFromMoney(Money *m_)
+{
+    scene -> removeItem(m_);
+    money.removeOne(m_);
+    m_->deleteLater();
+}
